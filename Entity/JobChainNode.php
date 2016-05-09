@@ -33,7 +33,7 @@ class JobChainNode extends AbstractEntity
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(name="error_state", type="string", length=255)
+     * @ORM\Column(name="error_state", type="string", length=255, nullable=true)
      */
     protected $errorState;
 
@@ -41,7 +41,7 @@ class JobChainNode extends AbstractEntity
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $job;
 
@@ -49,14 +49,14 @@ class JobChainNode extends AbstractEntity
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(name="next_state", type="string", length=255)
+     * @ORM\Column(name="next_state", type="string", length=255, nullable=true)
      */
     protected $nextState;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="on_error", type="string", length=7)
+     * @ORM\Column(name="on_error", type="string", length=7, nullable=true)
      */
     protected $onError;
 
@@ -73,8 +73,8 @@ class JobChainNode extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="OnReturnCode", cascade={"all"})
      * @ORM\JoinTable(name="JOE_JOB_CHAIN_NODE_ON_RETURN_CODES",
-     *      joinColumns={@ORM\JoinColumn(name="job_chain_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="on_return_codes_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="job_chain_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="on_return_codes_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $onReturnCodeCollection;

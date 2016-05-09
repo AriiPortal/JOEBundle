@@ -39,18 +39,14 @@ class DelayOrderAfterSetback extends AbstractEntity
     protected $isMaximum;
 
     /**
-     * @var BFolliot\Date\DateInterval
+     * @var string
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
-     *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $delay;
 
     /**
      * Gets the delay
-     *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php.
      *
      * @return BFolliot\Date\DateInterval
      */
@@ -62,13 +58,9 @@ class DelayOrderAfterSetback extends AbstractEntity
     /**
      * Sets the delay
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php.
-     *
-     * @param BFolliot\Date\DateInterval $delay the delay
-     *
      * @return self
      */
-    public function setDelay(DateInterval $delay)
+    public function setDelay($delay)
     {
         $this->delay = $delay;
 

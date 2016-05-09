@@ -9,7 +9,6 @@
 
 namespace Arii\JOEBundle\Entity;
 
-use BFolliot\Date\DateInterval;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -54,20 +53,18 @@ class Job extends AbstractEntity
     protected $forceIdleTimeout = false;
 
     /**
-     * @var BFolliot\Date\DateInterval
+     * @var String
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
-     *
-     * @ORM\Column(name="idle_timeout", type="string")
+     * @ORM\Column(name="idle_timeout", type="string", nullable=true)
      */
-    protected $idleTimeout = 'PT5S';
+    protected $idleTimeout = '5';
 
     /**
-     * @var array
+     * @var string
      *
-     * @ORM\Column(name="ignore_signals", type="simple_array")
+     * @ORM\Column(name="ignore_signals", type="simple_array", nullable=true)
      */
-    protected $ignoreSignals = array('all');
+    protected $ignoreSignals = array();
 
     /**
      * @var string
@@ -151,13 +148,11 @@ class Job extends AbstractEntity
     protected $temporary = false;
 
     /**
-     * @var BFolliot\Date\DateInterval
+     * @var string
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
-     *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
-    protected $timeout = 'PT0S';
+    protected $timeout;
 
     /**
      * @var string
@@ -174,16 +169,16 @@ class Job extends AbstractEntity
     protected $visible = 1;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="warn_if_longer_than", type="datetime", nullable=true)
+     * @ORM\Column(name="warn_if_longer_than", type="string", nullable=true)
      */
     protected $warnIfLongerThan;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="warn_if_shorter_than", type="datetime", nullable=true)
+     * @ORM\Column(name="warn_if_shorter_than", type="string", nullable=true)
      */
     protected $warnIfShorterThan;
 
@@ -207,8 +202,8 @@ class Job extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="Variable", cascade={"all"})
      * @ORM\JoinTable(name="JOE_JOB_ENVIRONMENT_VARIABLES",
-     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="variable_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="variable_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $environmentVariables;
@@ -242,8 +237,8 @@ class Job extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="StartWhenDirectoryChanged", cascade={"all"})
      * @ORM\JoinTable(name="JOE_JOB_START_WHEN_DIRECTORY_CHANGED",
-     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="start_when_directory_changed_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="start_when_directory_changed_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $startWhenDirectoryChanged;
@@ -253,8 +248,8 @@ class Job extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="DelayAfterError", cascade={"all"})
      * @ORM\JoinTable(name="JOE_JOB_DELAY_AFTER_ERROR",
-     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="delay_after_error_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="delay_after_error_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $delayAfterError;
@@ -264,8 +259,8 @@ class Job extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="DelayOrderAfterSetback", cascade={"all"})
      * @ORM\JoinTable(name="ARII_JOB_JOE_DELAY_ORDER_AFTER_SETBACK",
-     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="delay_order_after_setback_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="delay_order_after_setback_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $delayOrderAfterSetBack;
@@ -283,8 +278,8 @@ class Job extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="Commands", cascade={"all"})
      * @ORM\JoinTable(name="JOE_JOB_COMMANDS",
-     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $commandsCollection;
@@ -370,25 +365,21 @@ class Job extends AbstractEntity
     /**
      * Get idleTimeout
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
-     *
-     * @return \BFolliot\Date\DateInterval
+     * @return string
      */
     public function getIdleTimeout()
     {
-        return new DateInterval($this->idleTimeout);
+        return $this->idleTimeout;
     }
 
     /**
      * Set idleTimeout
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
-     *
-     * @param \BFolliot\Date\DateInterval idleTimeout
+     * @param string idleTimeout
      */
-    public function setIdleTimeout(DateInterval $idleTimeout)
+    public function setIdleTimeout( $idleTimeout)
     {
-        $this->idleTimeout = $idleTimeout->toSpec();
+        $this->idleTimeout = $idleTimeout;
         return $this;
     }
 
@@ -407,7 +398,7 @@ class Job extends AbstractEntity
      *
      * @param array ignoreSignals
      */
-    public function setIgnoreSignals(array $ignoreSignals = array('all'))
+    public function setIgnoreSignals(array $ignoreSignals = array())
     {
         $this->ignoreSignals = $ignoreSignals;
         return $this;
@@ -647,25 +638,21 @@ class Job extends AbstractEntity
     /**
      * Get timeout
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
-     *
-     * @return \BFolliot\Date\DateInterval
+     * @return string
      */
     public function getTimeout()
     {
-        return new DateInterval($this->timeout);
+        return $this->timeout;
     }
 
     /**
      * Set timeout
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
-     *
-     * @param \BFolliot\Date\DateInterval timeout
+     * @param string timeout
      */
-    public function setTimeout(DateInterval $timeout)
+    public function setTimeout($timeout)
     {
-        $this->timeout = $timeout->toSpec();
+        $this->timeout = $timeout;
         return $this;
     }
 
@@ -724,9 +711,9 @@ class Job extends AbstractEntity
     /**
      * Set warnIfLongerThan
      *
-     * @param DateTime warnIfLongerThan
+     * @param string warnIfLongerThan
      */
-    public function setWarnIfLongerThan(DateTime $warnIfLongerThan)
+    public function setWarnIfLongerThan($warnIfLongerThan)
     {
         $this->warnIfLongerThan = $warnIfLongerThan;
         return $this;
@@ -745,9 +732,9 @@ class Job extends AbstractEntity
     /**
      * Set warnIfShorterThan
      *
-     * @param DateTime warnIfShorterThan
+     * @param string warnIfShorterThan
      */
-    public function setWarnIfShorterThan(DateTime $warnIfShorterThan)
+    public function setWarnIfShorterThan($warnIfShorterThan)
     {
         $this->warnIfShorterThan = $warnIfShorterThan;
         return $this;

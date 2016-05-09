@@ -25,7 +25,7 @@ class Commands extends AbstractEntity
      *
      * @Assert\NotBlank()
      * @Assert\Length(max=255)
-     * @ORM\Column(name="on_exit_code", type="string", length=255)
+     * @ORM\Column(name="on_exit_code", type="string", length=255, nullable=true)
      */
     protected $onExitCode;
 
@@ -34,8 +34,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="AddJobs", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_ADD_JOBS",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="add_jobs_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="add_jobs_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $addJobsCollection;
@@ -45,8 +45,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="AddOrder", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_ADD_ORDER",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="add_order_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="add_order_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $addOrderCollection;
@@ -56,8 +56,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="ModifyJob", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_MODIFY_JOB",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="modify_job_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="modify_job_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $modifyJobCollection;
@@ -67,8 +67,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="ModifyOrder", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_MODIFY_ORDER",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="modify_order_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="modify_order_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $modifyOrderCollection;
@@ -78,8 +78,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="ModifySpooler", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_MODIFY_SPOOLER",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="modify_spooler_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="modify_spooler_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $modifySpoolerCollection;
@@ -89,8 +89,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="SchedulerLogLogCategoriesReset", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_SCHEDULER_LOG_LOG_CATEGORIES_RESET",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="scheduler_log_log_categories_reset_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="scheduler_log_log_categories_reset_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $schedulerLogLogCategoriesResetCollection;
@@ -100,8 +100,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="SchedulerLogLogCategoriesSet", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_SCHEDULER_LOG_LOG_CATEGORIES_SET",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="scheduler_log_log_categories_set_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="scheduler_log_log_categories_set_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $schedulerLogLogCategoriesSetCollection;
@@ -111,8 +111,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="SchedulerLogLogCategoriesShow", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_SCHEDULER_LOG_LOG_CATEGORIES_SHOW",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="scheduler_log_log_categories_show_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="scheduler_log_log_categories_show_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $schedulerLogLogCategoriesShowCollection;
@@ -122,8 +122,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="ShowHistory", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_SHOW_HISTORY",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="show_history_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="show_history_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $showHistoryCollection;
@@ -133,8 +133,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="ShowJob", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_SHOW_JOB",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="show_job_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="show_job_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $showJobCollection;
@@ -144,8 +144,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="ShowJobs", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_SHOW_JOBS",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="show_jobs_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="show_jobs_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $showJobsCollection;
@@ -155,8 +155,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="ShowJobChain", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_SHOW_JOB_CHAIN",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="show_job_chain_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="show_job_chain_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $showJobChainCollection;
@@ -166,8 +166,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="ShowState", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_SHOW_STATE",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="show_state_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="show_state_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $showStateCollection;
@@ -177,8 +177,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="StartJob", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_START_JOB",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="start_job_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="start_job_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $startJobCollection;
@@ -188,8 +188,8 @@ class Commands extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="Terminate", cascade={"all"})
      * @ORM\JoinTable(name="JOE_COMMANDS_TERMINATE",
-     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="terminate_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="commands_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="terminate_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $terminateCollection;

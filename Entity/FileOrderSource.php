@@ -23,7 +23,7 @@ class FileOrderSource extends AbstractEntity
     /**
      * @var boolean
      *
-     * @ORM\Column(name="alert_when_directory_missing", type="boolean")
+     * @ORM\Column(name="alert_when_directory_missing", type="boolean", nullable=true)
      */
     protected $alertWhenDirectoryMissing;
 
@@ -31,7 +31,7 @@ class FileOrderSource extends AbstractEntity
      * @var integer
      *
      * @Assert\GreaterThan(value=-1)
-     * @ORM\Column(name="delay_after_error", type="integer")
+     * @ORM\Column(name="delay_after_error", type="integer", nullable=true)
      */
     protected $delayAfterError;
 
@@ -39,7 +39,7 @@ class FileOrderSource extends AbstractEntity
      * @var integer
      *
      * @Assert\GreaterThan(value=-1)
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="repeat_count", type="integer")
      */
     protected $repeat = 10;
 
@@ -70,7 +70,7 @@ class FileOrderSource extends AbstractEntity
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $regex;
 

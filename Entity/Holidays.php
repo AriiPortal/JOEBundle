@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Variable
+ * Holidays
  *
  * @ORM\Table(name="JOE_HOLIDAYS")
  * @ORM\Entity
@@ -25,8 +25,8 @@ class Holidays extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="Weekdays", cascade={"all"})
      * @ORM\JoinTable(name="JOE_HOLIDAYS_WEEKDAYS",
-     *      joinColumns={@ORM\JoinColumn(name="holidays_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="weekdays_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="holidays_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="weekdays_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $weekdaysCollection;
@@ -36,8 +36,8 @@ class Holidays extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="Holiday", cascade={"all"})
      * @ORM\JoinTable(name="JOE_HOLIDAYS_HOLIDAY",
-     *      joinColumns={@ORM\JoinColumn(name="holidays_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="holiday_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="holidays_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="holiday_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $holidayCollection;
@@ -45,8 +45,8 @@ class Holidays extends AbstractEntity
     /**
      * @ORM\ManyToMany(targetEntity="IncludeFile", cascade={"all"})
      * @ORM\JoinTable(name="JOE_HOLIDAYS_INCLUDES",
-     *      joinColumns={@ORM\JoinColumn(name="holidays_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="include_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="holidays_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="include_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $includeCollection;

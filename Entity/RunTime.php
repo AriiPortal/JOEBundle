@@ -8,7 +8,6 @@
 
 namespace Arii\JOEBundle\Entity;
 
-use BFolliot\Date\DateInterval;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -47,8 +46,8 @@ class RunTime extends AbstractTime
      *
      * @ORM\ManyToMany(targetEntity="Period", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_PERIODS",
-     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="period_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="period_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $periods;
@@ -58,8 +57,8 @@ class RunTime extends AbstractTime
      *
      * @ORM\ManyToMany(targetEntity="At", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_ATS",
-     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="at_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="at_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $ats;
@@ -69,8 +68,8 @@ class RunTime extends AbstractTime
      *
      * @ORM\ManyToMany(targetEntity="Date", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_DATES",
-     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="date_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="date_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $dates;
@@ -80,8 +79,8 @@ class RunTime extends AbstractTime
      *
      * @ORM\ManyToMany(targetEntity="Weekdays", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_WEEKDAYS_COLLECTION",
-     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="weekdays_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="weekdays_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $weekdaysCollection;
@@ -91,8 +90,8 @@ class RunTime extends AbstractTime
      *
      * @ORM\ManyToMany(targetEntity="Monthday", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_MONTHDAY_COLLECTION",
-     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="monthday_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="monthday_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $monthdayCollection;
@@ -102,8 +101,8 @@ class RunTime extends AbstractTime
      *
      * @ORM\ManyToMany(targetEntity="Month", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_MONTH",
-     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="month_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="month_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $monthCollection;
@@ -113,8 +112,8 @@ class RunTime extends AbstractTime
      *
      * @ORM\ManyToMany(targetEntity="Ultimos", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_ULTIMOS",
-     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="ultimos_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="run_time_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="ultimos_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $ultimosCollection;

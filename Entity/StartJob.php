@@ -25,16 +25,16 @@ class StartJob extends At
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
-    protected $after;
+    protected $afterDelay;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
-    protected $force = true;
+    protected $forceStart = true;
 
     /**
      * @var string
@@ -48,15 +48,15 @@ class StartJob extends At
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $name;
+    protected $taskName;
 
     /**
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(name="web_service", type="string", length=255)
+     * @ORM\Column(name="web_service", type="string", length=255, nullable=true)
      */
     protected $webService;
 
@@ -73,8 +73,8 @@ class StartJob extends At
      *
      * @ORM\ManyToMany(targetEntity="Variable", cascade={"all"})
      * @ORM\JoinTable(name="JOE_START_JOB_VARIABLES",
-     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="variable_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="variable_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $environmentVariables;
@@ -91,49 +91,49 @@ class StartJob extends At
     }
 
     /**
-     * Gets the value of after.
+     * Gets the value of afterDelay.
      *
      * @return integer
      */
-    public function getAfter()
+    public function getAfterDelay()
     {
-        return $this->after;
+        return $this->afterDelay;
     }
 
     /**
-     * Sets the value of after.
+     * Sets the value of afterDelay.
      *
-     * @param integer $after the after
+     * @param integer $afterDelay the afterDelay
      *
      * @return self
      */
-    public function setAfter($after)
+    public function setAfterDelay($afterDelay)
     {
-        $this->after = $after;
+        $this->afterDelay = $afterDelay;
 
         return $this;
     }
 
     /**
-     * Gets the value of force.
+     * Gets the value of forceStart.
      *
      * @return boolean
      */
-    public function getForce()
+    public function getForceStart()
     {
-        return $this->force;
+        return $this->forceStart;
     }
 
     /**
-     * Sets the value of force.
+     * Sets the value of forceStart.
      *
-     * @param boolean $force the force
+     * @param boolean $forceStart the forceStart
      *
      * @return self
      */
-    public function setForce($force)
+    public function setForceStart($forceStart)
     {
-        $this->force = $force;
+        $this->forceStart = $forceStart;
 
         return $this;
     }
@@ -167,21 +167,21 @@ class StartJob extends At
      *
      * @return string
      */
-    public function getName()
+    public function getTaskName()
     {
-        return $this->name;
+        return $this->taskName;
     }
 
     /**
-     * Sets the value of name.
+     * Sets the value of taskName.
      *
-     * @param string $name the name
+     * @param string $taskName the taskName
      *
      * @return self
      */
-    public function setName($name)
+    public function setTaskName($taskName)
     {
-        $this->name = $name;
+        $this->taskName = $taskName;
 
         return $this;
     }

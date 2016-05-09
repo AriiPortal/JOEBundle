@@ -8,7 +8,6 @@
 
 namespace Arii\JOEBundle\Entity;
 
-use BFolliot\Date\DateInterval;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -32,9 +31,7 @@ class DelayAfterError extends AbstractEntity
     protected $delayCount;
 
     /**
-     * @var BFolliot\Date\DateInterval
-     *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
+     * @var string
      *
      * @ORM\Column(type="string")
      */
@@ -67,9 +64,7 @@ class DelayAfterError extends AbstractEntity
     /**
      * Gets the delay
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php.
-     *
-     * @return BFolliot\Date\DateInterval
+     * @return string
      */
     public function getDelay()
     {
@@ -79,13 +74,11 @@ class DelayAfterError extends AbstractEntity
     /**
      * Sets the delay
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php.
-     *
-     * @param BFolliot\Date\DateInterval $delay the delay
+     * @param string $delay the delay
      *
      * @return self
      */
-    public function setDelay(DateInterval $delay)
+    public function setDelay($delay)
     {
         $this->delay = $delay;
 

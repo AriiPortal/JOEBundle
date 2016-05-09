@@ -21,9 +21,7 @@ class Period extends AbstractTime
 {
 
     /**
-     * @var DateInterval
-     *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
+     * @var string
      *
      * @ORM\Column(name="absolute_repeat", type="string", length=255, nullable=true)
      */

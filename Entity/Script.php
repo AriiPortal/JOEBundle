@@ -28,7 +28,7 @@ class Script extends AbstractEntity
      * @Assert\Length(max=255)
      * @ORM\Column(name="language", type="string", length=255)
      */
-    protected $language;
+    protected $language = "shell";
 
     /**
      * @var string
@@ -65,11 +65,18 @@ class Script extends AbstractEntity
     /**
      * @ORM\ManyToMany(targetEntity="IncludeFile", cascade={"all"})
      * @ORM\JoinTable(name="JOE_SCRIPT_INCLUDES",
-     *      joinColumns={@ORM\JoinColumn(name="script_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="include_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="script_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="include_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $includes;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="text", nullable=true)
+     */
+    protected $code;
 
     /**
      * Constructor
@@ -233,6 +240,30 @@ class Script extends AbstractEntity
     public function setJavaClassPath($javaClassPath)
     {
         $this->javaClassPath = $javaClassPath;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of code.
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Sets the value of code.
+     *
+     * @param string $code the code of the script
+     *
+     * @return self
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
 
         return $this;
     }

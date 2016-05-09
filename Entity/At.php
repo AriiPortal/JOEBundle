@@ -44,7 +44,7 @@ class At extends AbstractEntity
      *
      * @return self
      */
-    protected function setAt(DateTime $at)
+    public function setAt(DateTime $at)
     {
         $this->at = $at;
 

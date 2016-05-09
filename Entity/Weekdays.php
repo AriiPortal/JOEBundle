@@ -25,8 +25,8 @@ class Weekdays extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="Day", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_WEEKDAYS_DAYS",
-     *      joinColumns={@ORM\JoinColumn(name="weekdays_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="weekdays_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $days;

@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Variable
+ * Ultimos
  *
  * @ORM\Table(name="JOE_ULTIMOS")
  * @ORM\Entity
@@ -25,8 +25,8 @@ class Ultimos extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="Day", cascade={"all"})
      * @ORM\JoinTable(name="JOE_ULTIMOS_DAY",
-     *      joinColumns={@ORM\JoinColumn(name="ultimatos_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="ultimatos_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $dayCollection;

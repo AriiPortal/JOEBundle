@@ -31,7 +31,7 @@ class Order extends AbstractEntity
     /**
      * @var integer
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $priority;
 
@@ -39,7 +39,7 @@ class Order extends AbstractEntity
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $title;
 
@@ -47,7 +47,7 @@ class Order extends AbstractEntity
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $name;
 
@@ -84,7 +84,7 @@ class Order extends AbstractEntity
      *
      * @return self
      */
-    public function setJobScheduler(Arii\JOEBundle\Entity\JobScheduler $jobScheduler)
+    public function setJobScheduler(JobScheduler $jobScheduler)
     {
         $this->jobScheduler = $jobScheduler;
 

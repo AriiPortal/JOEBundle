@@ -25,8 +25,8 @@ class Monthday extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="Day", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_MONTHDAYS_DAYS",
-     *      joinColumns={@ORM\JoinColumn(name="monthday_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="monthday_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $days;
@@ -36,8 +36,8 @@ class Monthday extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="Weekday", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_MONTHDAYS_WEEKDAY",
-     *      joinColumns={@ORM\JoinColumn(name="monthday_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="weekday_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="monthday_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="weekday_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $weekdayCollection;

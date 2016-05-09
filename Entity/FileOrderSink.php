@@ -24,7 +24,7 @@ class FileOrderSink extends AbstractEntity
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(name="move_to", type="string", length=255)
+     * @ORM\Column(name="move_to", type="string", length=255, nullable=true)
      */
     protected $moveTo;
 
@@ -39,7 +39,7 @@ class FileOrderSink extends AbstractEntity
     /**
      * @var boolean
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $remove;
 

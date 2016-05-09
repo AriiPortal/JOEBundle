@@ -23,7 +23,7 @@ class Day extends AbstractEntity
     /**
      * @var integer
      *
-     * @ORM\Column(name="day", type="integer")
+     * @ORM\Column(name="day", type="simple_array")
      */
     protected $day;
 
@@ -32,8 +32,8 @@ class Day extends AbstractEntity
      *
      * @ORM\ManyToMany(targetEntity="Period", cascade={"all"})
      * @ORM\JoinTable(name="JOE_RUN_TIME_DAY_PERIODS",
-     *      joinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="period_id", referencedColumnName="id", unique=true)}
+     *      joinColumns={@ORM\JoinColumn(name="day_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="period_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
     protected $periods;
@@ -101,7 +101,7 @@ class Day extends AbstractEntity
      *
      * @return self
      */
-    public function setDay($day)
+    public function setDay(array $day)
     {
         $this->day = $day;
 

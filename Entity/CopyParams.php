@@ -27,16 +27,16 @@ class CopyParams extends AbstractEntity
      * @Assert\Length(max=255)
      * @ORM\Column(type="string", length=255)
      */
-    protected $from;
+    protected $fromSource;
 
     /**
      * Gets the value of from.
      *
      * @return string
      */
-    public function getFrom()
+    public function getFromSource()
     {
-        return $this->from;
+        return $this->fromSource;
     }
 
     /**
@@ -46,9 +46,9 @@ class CopyParams extends AbstractEntity
      *
      * @return self
      */
-    public function setFrom($from)
+    public function setFromSource($fromSource)
     {
-        $this->from = $from;
+        $this->fromSource = $fromSource;
 
         return $this;
     }

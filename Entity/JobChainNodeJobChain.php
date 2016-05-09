@@ -26,7 +26,7 @@ class JobChainNodeJobChain extends AbstractEntity
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(name="error_state", type="string", length=255)
+     * @ORM\Column(name="error_state", type="string", length=255, nullable=true)
      */
     protected $errorState;
 
@@ -42,7 +42,7 @@ class JobChainNodeJobChain extends AbstractEntity
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(name="next_state", type="string", length=255)
+     * @ORM\Column(name="next_state", type="string", length=255, nullable=true)
      */
     protected $nextState;
 
