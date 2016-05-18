@@ -1,0 +1,39 @@
+var JOE_ROUTES = {
+	ui: {
+		menu: {
+			url: "{{ url('xml_menu') }}?route={{ app.request.attributes.get('_route') }}",
+			icons: "{{ asset('/bundles/ariicore/images/menu/') }}"
+		},
+		ribbon: {
+			url: "{{ url('json_JOE_ribbon') }}",
+			icons: "{{ asset('bundles/ariicore/images/ribbon/') }}"
+		}
+	},
+	api: function(target) {
+		return {
+			create: ("{{ url('arii_JOE_api_create', {'target':'TARGET'}) }}"
+					 .replace('TARGET', target)),
+			select: function(id) {
+				return {
+					update: ("{{ url('arii_JOE_api_update', {'id':'ID', 'target':'TARGET'}) }}"
+							 .replace('TARGET', target)
+							 .replace('ID', id)),
+					remove: ("{{ url('arii_JOE_api_remove', {'id':'ID', 'target':'TARGET'}) }}"
+							 .replace('TARGET', target)
+							 .replace('ID', id)),
+					json: ("{{ url('arii_JOE_api_json', {'id':'ID', 'target':'TARGET'}) }}"
+							 .replace('TARGET', target)
+						   .replace('ID', id)),
+					xml: ("{{ url('arii_JOE_api_xml', {'id':'ID', 'target':'TARGET'}) }}"
+							 .replace('TARGET', target)
+							 .replace('ID', id))
+				}
+			},
+			list: ("{{ url('arii_JOE_api_list', {'target':'TARGET'}) }}"
+				   .replace('TARGET', target))
+		}
+	},
+	asset: function (target) {
+		return "{{ asset('bundles/ariijoe/') }}" + target;
+	}
+};

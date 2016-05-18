@@ -13,18 +13,23 @@ class DefaultController extends Controller
         return $this->render('AriiJOEBundle:Default:index.html.twig');
     }
 
+    public function routesAction()
+    {
+        return $this->render('AriiJOEBundle:Default:routes.js.twig');
+    }
+
     public function ribbonAction()
     {
         $folder = $this->container->get('arii_core.folder');
         $session = $this->container->get('arii_core.session');
         $engine = $session->getSpoolerByName('arii');
         if (isset($engine[0]['shell']['data']))
-            $config = $engine[0]['shell']['data'].'/config';        
-        else 
+            $config = $engine[0]['shell']['data'].'/config';
+        else
             exit();
-        
+
         $Dir = $this->Remotes("$config/remote");
-        
+
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
         return $this->render('AriiJOEBundle:Default:ribbon.json.twig',array('Schedulers' => $Dir), $response);
@@ -49,14 +54,14 @@ class DefaultController extends Controller
         if ($request->get('folder')!='') {
             $folder = $request->get('folder');
         }
-        
-        $sql = $this->container->get('arii_core.sql');                  
+
+        $sql = $this->container->get('arii_core.sql');
         $qry = $sql->Select(array('ID','FOLDER','PATH','FILE','TYPE'))
                 .$sql->From(array('JOE_FILE'))
                 .$sql->Where(array('FOLDER'=>$folder))
                 .$sql->OrderBy(array('PATH','FILE'));
-        
-        $db = $this->container->get('arii_core.db');        
+
+        $db = $this->container->get('arii_core.db');
         $data = $db->Connector('grid');
         $res = $data->sql->query( $qry );
         $Info = $key_files = array();
@@ -65,10 +70,10 @@ class DefaultController extends Controller
             $Info[$file] = $line;
             $key_files[$file] = $file;
         }
-        
+
         $tools = $this->container->get('arii_core.tools');
         $tree = $tools->explodeTree($key_files, "/");
-        
+
         $response = new Response();
         $response->headers->set('Content-Type', 'text/xml');
         $list = '<?xml version="1.0" encoding="UTF-8"?>';
@@ -79,7 +84,7 @@ class DefaultController extends Controller
         return $response;
 
     }
-    
+
    function Folder2XML( $leaf, $id = '', $Info ) {
             $return = '';
             if (is_array($leaf)) {

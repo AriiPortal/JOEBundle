@@ -23,9 +23,7 @@ class Month extends AbstractEntity
     /**
      * @var string
      *
-     * @Assert\NotBlank()
-     * @Assert\Length(max=100)
-     * @ORM\Column(name="month", type="string", length=100)
+     * @ORM\Column(name="month", type="simple_array")
      */
     protected $month;
 

@@ -48,6 +48,13 @@ class Monitor extends AbstractEntity
     protected $script;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="java_options", type="text", nullable=true)
+     */
+    protected $javaOptions;
+
+    /**
      * Constructor
      *
      */
@@ -126,6 +133,27 @@ class Monitor extends AbstractEntity
     {
         $this->script = $script;
 
+        return $this;
+    }
+
+    /**
+     * Get javaOptions
+     *
+     * @return string
+     */
+    public function getJavaOptions()
+    {
+        return $this->javaOptions;
+    }
+
+    /**
+     * Set javaOptions
+     *
+     * @param string javaOptions
+     */
+    public function setJavaOptions($javaOptions)
+    {
+        $this->javaOptions = $javaOptions;
         return $this;
     }
 }

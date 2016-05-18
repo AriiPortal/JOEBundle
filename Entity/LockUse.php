@@ -20,14 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class LockUse extends AbstractEntity
 {
     /**
-     * @var Arii\JOEBundle\Entity\Job
-     *
-     * @ORM\ManyToOne(targetEntity="Job", cascade={"all"})
-     * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
-     */
-    protected $job;
-
-    /**
      * @var string
      *
      * @Assert\NotBlank()
@@ -43,29 +35,6 @@ class LockUse extends AbstractEntity
      */
     protected $exclusive = true;
 
-    /**
-     * Gets the value of job.
-     *
-     * @return Arii\JOEBundle\Entity\Job
-     */
-    public function getJob()
-    {
-        return $this->job;
-    }
-
-    /**
-     * Sets the value of job.
-     *
-     * @param Arii\JOEBundle\Entity\Job $job the job
-     *
-     * @return self
-     */
-    public function setJob(Job $job)
-    {
-        $this->job = $job;
-
-        return $this;
-    }
 
     /**
      * Gets the value of lock.

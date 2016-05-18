@@ -116,6 +116,21 @@ abstract class AbstractService
     }
 
     /**
+     * Return the short name (without the namespace) of the
+     * entity managed by the service
+     *
+     * @return String
+     */
+    public function getEntityNameShort()
+    {
+        $entityNamePath = explode('\\', $this->entityName);
+        $entityNameShort = array_pop($entityNamePath);
+
+        return $entityNameShort;
+    }
+
+
+    /**
      * @param Ramsey\Uuid\Uuid $id
      * @return Aura\Payload\Payload
      */
@@ -132,7 +147,7 @@ abstract class AbstractService
         );
 
         $entity = $this->entityManager
-            ->getRepository('AriiJOEBundle:Job')
+            ->getRepository('AriiJOEBundle:' . $this->getEntityNameShort())
             ->find($id);
 
         if (!$entity) {
@@ -184,9 +199,13 @@ abstract class AbstractService
             $event
         );
 
+
+        $entityNamePath = explode('\\', $this->entityName);
+        $entityNameShort = array_pop($entityNamePath);
+
         $collection = $this->entityManager
-            ->getRepository('AriiJOEBundle:Job')
-            ->findByJobScheduler($jobScheduler);
+                    ->getRepository('AriiJOEBundle:' . $this->getEntityNameShort())
+                    ->findByJobScheduler($jobScheduler);
 
 
         if (!$collection) {

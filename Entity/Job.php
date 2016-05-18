@@ -69,8 +69,6 @@ class Job extends AbstractEntity
     /**
      * @var string
      *
-     * Note: Change to string if you know the maximum length.
-     *
      * @ORM\Column(name="java_options", type="text", nullable=true)
      */
     protected $javaOptions;
@@ -191,11 +189,26 @@ class Job extends AbstractEntity
     protected $description;
 
     /**
-     * @var Doctrine\Common\Collections\ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="LockUse", mappedBy="job", cascade={"all"})
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="LockUse", cascade={"all"})
+     * @ORM\JoinTable(name="JOE_JOB_LOCK_USES",
+     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="lock_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
+     *      )
      */
     protected $lockUses;
+
+    /**
+     *
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="MonitorUse", cascade={"all"})
+     * @ORM\JoinTable(name="JOE_JOB_MONITOR_USES",
+     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="monitor_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
+     *      )
+     */
+    protected $monitorUses;
 
     /**
      * @var ArrayCollection
@@ -224,13 +237,17 @@ class Job extends AbstractEntity
      */
     protected $script;
 
-    /**
-     * @var Monitor
+
+     /**
+     * @var ArrayCollection
      *
-     * @ORM\OneToOne(targetEntity="Monitor", cascade={"all"})
-     * @ORM\JoinColumn(name="monitor_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Monitor", cascade={"all"})
+     * @ORM\JoinTable(name="JOE_JOB_MONITOR",
+     *      joinColumns={@ORM\JoinColumn(name="job_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="monitor_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
+     *      )
      */
-    protected $monitor;
+    protected $monitors;
 
     /**
      * @var ArrayCollection
@@ -292,10 +309,12 @@ class Job extends AbstractEntity
     {
         $this->delayAfterError           = new ArrayCollection;
         $this->delayOrderAfterSetBack    = new ArrayCollection;
-        $this->environmentVariable       = new ArrayCollection;
-        $this->lockUse                   = new ArrayCollection;
+        $this->environmentVariables      = new ArrayCollection;
+        $this->lockUses                  = new ArrayCollection;
+        $this->monitorUses               = new ArrayCollection;
         $this->startWhenDirectoryChanged = new ArrayCollection;
         $this->commandsCollection        = new ArrayCollection;
+        $this->monitors                  = new ArrayCollection;
         return parent::__construct();
     }
 
@@ -794,7 +813,43 @@ class Job extends AbstractEntity
     public function addLockUse(LockUse $lockUse)
     {
         $this->lockUses[] = $lockUse;
-        $lockUse->setJob($this);
+        return $this;
+    }
+
+
+    /**
+     * Get monitorUses collection
+     *
+     * @return ArrayCollection
+     */
+    public function getMonitorUses()
+    {
+        return $this->monitorUses;
+    }
+
+    /**
+     * Set monitorUses collection
+     *
+     * @param ArrayCollection monitorUses
+     *
+     * @return self
+     */
+    public function setMonitorUses(ArrayCollection $monitorUses)
+    {
+        $this->monitorUses = $monitorUses;
+        return $this;
+    }
+
+    /**
+     * Add monitorUse in collection
+     *
+     * @param MonitorUse $monitorUse
+     *
+     * @return self
+     */
+    public function addMonitorUse(MonitorUse $monitorUse)
+    {
+        $this->monitorUses[] = $monitorUse;
         return $this;
     }
 
@@ -881,13 +936,13 @@ class Job extends AbstractEntity
     }
 
     /**
-     * Get Monitor
+     * Get Monitors
      *
-     * @return Monitor
+     * @return ArrayCollection
      */
-    public function getMonitor()
+    public function getMonitors()
     {
-        return $this->monitor;
+        return $this->monitors;
     }
 
     /**
@@ -897,9 +952,22 @@ class Job extends AbstractEntity
      *
      * @return self
      */
-    public function setMonitor($monitor)
+    public function setMonitors(ArrayCollection $monitors)
     {
-        $this->monitor = $monitor;
+        $this->monitors = $monitors;
+        return $this;
+    }
+
+    /**
+     * Add Monitor in collection
+     *
+     * @param Monitor $monitor
+     *
+     * @return self
+     */
+    public function addMonitor(Monitor $monitor)
+    {
+        $this->monitors[] = $monitor;
         return $this;
     }
 

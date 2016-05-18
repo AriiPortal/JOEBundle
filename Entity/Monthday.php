@@ -40,7 +40,7 @@ class Monthday extends AbstractEntity
      *      inverseJoinColumns={@ORM\JoinColumn(name="weekday_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
-    protected $weekdayCollection;
+    protected $weekdays;
 
     /**
      * Constructor
@@ -49,7 +49,7 @@ class Monthday extends AbstractEntity
     public function __construct()
     {
         $this->days              = new ArrayCollection;
-        $this->weekdayCollection = new ArrayCollection;
+        $this->weekdays = new ArrayCollection;
         return parent::__construct();
     }
 
@@ -96,19 +96,19 @@ class Monthday extends AbstractEntity
      */
     public function getWeekdays()
     {
-        return $this->weekdayCollection;
+        return $this->weekdays;
     }
 
     /**
      * Set Weekday collection
      *
-     * @param ArrayCollection $weekdayCollection
+     * @param ArrayCollection $weekdays
      *
      * @return self
      */
-    public function setWeekdays(ArrayCollection $weekdayCollection)
+    public function setWeekdays(ArrayCollection $weekdays)
     {
-        $this->weekdayCollection = $weekdayCollection;
+        $this->weekdays = $weekdays;
         return $this;
     }
 
@@ -121,7 +121,7 @@ class Monthday extends AbstractEntity
      */
     public function addWeekday(Weekday $weekday)
     {
-        $this->weekdayCollection[] = $weekday;
+        $this->weekdays[] = $weekday;
         return $this;
     }
 }

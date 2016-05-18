@@ -22,9 +22,9 @@ class Date extends AbstractEntity
 {
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="date", type="string")
      */
     protected $date;
 
@@ -52,7 +52,7 @@ class Date extends AbstractEntity
     /**
      * Gets the value of date.
      *
-     * @return \DateTime
+     * @return String
      */
     public function getDate()
     {
@@ -62,11 +62,11 @@ class Date extends AbstractEntity
     /**
      * Sets the value of date.
      *
-     * @param \DateTime $date the date
+     * @param String $date the date
      *
      * @return self
      */
-    protected function setDate(\DateTime $date)
+    public function setDate($date)
     {
         $this->date = $date;
 

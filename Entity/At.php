@@ -21,16 +21,16 @@ class At extends AbstractEntity
 {
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="at", type="datetime")
+     * @ORM\Column(name="at", type="string")
      */
     protected $at;
 
     /**
      * Gets the value of at.
      *
-     * @return \DateTime
+     * @return string
      */
     public function getAt()
     {
@@ -40,11 +40,11 @@ class At extends AbstractEntity
     /**
      * Sets the value of at.
      *
-     * @param \DateTime $at the at
+     * @param string $at the at
      *
      * @return self
      */
-    public function setAt(DateTime $at)
+    public function setAt($at)
     {
         $this->at = $at;
 

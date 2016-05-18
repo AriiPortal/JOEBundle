@@ -33,3 +33,16 @@ services:
       - "@doctrine.orm.entity_manager"
       - "@event_dispatcher"
       - "@validator"
+  uuid_normalizer:
+    class: GBProd\UuidNormalizer\UuidNormalizer
+    tags:
+      - { name: serializer.normalizer }
+  uuid_denormalizer:
+    class: GBProd\UuidNormalizer\UuidDenormalizer
+    tags:
+      - { name: serializer.denormalizer }
+  arii_joe.diff_update:
+    class: Arii\JOEBundle\Service\DifferentialUpdate
+    arguments:
+      - "@validator"
+      - "@doctrine.orm.entity_manager"

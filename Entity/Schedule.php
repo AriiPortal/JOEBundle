@@ -40,21 +40,21 @@ class Schedule extends AbstractEntity
      * @var string
      *
      * @Assert\Length(max=255)
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $substitute;
 
     /**
      * @var DateTime
      *
-     * @ORM\Column(name="valid_from", type="datetime")
+     * @ORM\Column(name="valid_from", type="datetime", nullable=true))
      */
     protected $validFrom;
 
     /**
      * @var DateTime
      *
-     * @ORM\Column(name="valid_to", type="datetime")
+     * @ORM\Column(name="valid_to", type="datetime", nullable=true))
      */
     protected $validTo;
 

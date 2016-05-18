@@ -21,16 +21,16 @@ abstract class AbstractTime extends AbstractEntity
 {
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="begin", type="datetime", nullable=true)
+     * @ORM\Column(name="begin", type="string", nullable=true)
      */
     protected $begin;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="end", type="datetime", nullable=true)
+     * @ORM\Column(name="end", type="string", nullable=true)
      */
     protected $end;
 
@@ -42,9 +42,9 @@ abstract class AbstractTime extends AbstractEntity
     protected $letRun = false;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="single_start", type="datetime", nullable=true)
+     * @ORM\Column(name="single_start", type="string", nullable=true)
      */
     protected $singleStart;
 
@@ -56,9 +56,7 @@ abstract class AbstractTime extends AbstractEntity
     protected $whenHoliday;
 
     /**
-     * @var DateInterval
-     *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
+     * @var string
      *
      * @ORM\Column(name="interval_repeat", type="string", nullable=true)
      */
@@ -67,7 +65,7 @@ abstract class AbstractTime extends AbstractEntity
     /**
      * Set begin
      *
-     * @param \DateTime $begin
+     * @param string $begin
      *
      * @return RunTime
      */
@@ -81,7 +79,7 @@ abstract class AbstractTime extends AbstractEntity
     /**
      * Get begin
      *
-     * @return \DateTime
+     * @return string
      */
     public function getBegin()
     {
@@ -91,7 +89,7 @@ abstract class AbstractTime extends AbstractEntity
     /**
      * Set end
      *
-     * @param \DateTime $end
+     * @param string $end
      *
      * @return RunTime
      */
@@ -105,7 +103,7 @@ abstract class AbstractTime extends AbstractEntity
     /**
      * Get end
      *
-     * @return \DateTime
+     * @return string
      */
     public function getEnd()
     {
@@ -139,7 +137,7 @@ abstract class AbstractTime extends AbstractEntity
     /**
      * Set singleStart
      *
-     * @param \DateTime $singleStart
+     * @param string $singleStart
      *
      * @return RunTime
      */
@@ -153,7 +151,7 @@ abstract class AbstractTime extends AbstractEntity
     /**
      * Get singleStart
      *
-     * @return \DateTime
+     * @return string
      */
     public function getSingleStart()
     {
@@ -187,28 +185,21 @@ abstract class AbstractTime extends AbstractEntity
     /**
      * Get repeat
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
-     *
-     * @return \BFolliot\Date\DateInterval
+     * @return string
      */
     public function getRepeat()
     {
-        if (empty($this->repeat)) {
-            return null;
-        }
-        return new DateInterval($this->repeat);
+        return $this->repeat;
     }
 
     /**
      * Set repeat
      *
-     * TODO: https://github.com/doctrine/dbal/blob/master/lib/Doctrine/DBAL/Types/DateIntervalType.php
-     *
-     * @param \BFolliot\Date\DateInterval repeat
+     * @param string
      */
-    public function setRepeat(DateInterval $repeat)
+    public function setRepeat($repeat)
     {
-        $this->repeat = $repeat->toSpec();
+        $this->repeat = $repeat;
         return $this;
     }
 }

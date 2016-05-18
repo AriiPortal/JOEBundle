@@ -1,56 +1,35 @@
-{# src/Arii/JOCBundle/Resources/views/index.html.twig #}
-{% extends "AriiJOEBundle::layout.html.twig" %}
+{% extends "AriiCoreBundle::base.html.twig" %}
+
+{% block dhtmlx %}
+    <link rel="stylesheet" href="{{ asset('dhtmlx/skins/terrace/dhtmlx.css') }}" />
+    <link rel="stylesheet" href="{{ asset('dhtmlx_scheduler/codebase/dhtmlxscheduler.css') }}" />
+	<link rel="stylesheet" href="{{ asset('bundles/ariijoe/css/dhtmlxhacks.css') }}" />
+
+	<script src="{{ asset('dhtmlx/codebase/dhtmlx.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('dhtmlx_scheduler/codebase/dhtmlxscheduler.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('dhtmlx_scheduler/codebase/ext/dhtmlxscheduler_agenda_view.js') }}" type="text/javascript"></script>
+
+	<script src="{{ asset('bundles/ariijoe/js/joe/tree/control_tree.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/ariijoe/js/joe/tree/node.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/ariijoe/js/joe/tree/collection_node.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/ariijoe/js/joe/tree/data_node.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/ariijoe/js/joe/loader.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/ariijoe/js/joe/view.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/ariijoe/js/joe/view_manager.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/ariijoe/js/joe/form.js') }}" type="text/javascript"></script>
+	<script src="{{ asset('bundles/ariijoe/js/joe/app.js') }}" type="text/javascript"></script>
+
+	<script src="{{ url('js_JOE_routes') }}" type="text/javascript"></script>
+{% endblock dhtmlx %}
+
 {% block body %}
-<!--[if !IE]>start section<![endif]-->	
-<script>
-var Cat =  new Array([1,2,3]);
+{% endblock body %}
 
-dhtmlxEvent(window,"load",function(){     
-
-    globalLayout = new dhtmlXLayoutObject(document.body, "2U");
-    globalLayout.cells("a").hideHeader();
-    globalLayout.cells("a").setWidth(420);
-
-    globalMenu = globalLayout.cells("a").attachMenu();
-    globalMenu.setIconsPath( "{{ asset('/bundles/ariicore/images/menu/') }}" );
-    globalMenu.loadStruct("{{ url('xml_menu') }}?route={{ app.request.attributes.get('_route') }}");
-
-    myRibbon = globalLayout.cells("a").attachRibbon(); 
-    myRibbon.setIconPath( "{{ asset('bundles/ariicore/images/ribbon/') }}" );
-    myRibbon.loadStruct("{{ url('json_JOE_ribbon') }}");
-    myRibbon.attachEvent("onStateChange", StateRibbon );
-    myRibbon.attachEvent("onClick", ClickRibbon );
-    
-    myMenu = new dhtmlXMenuObject();
-    myMenu.renderAsContextMenu();
-    myMenu.setIconsPath( "{{ asset('/bundles/ariicore/images/menu/') }}" );
-    myMenu.loadStruct("{{ url('xml_JOE_menu') }}");
-
-    myTree = globalLayout.cells("a").attachTree();
-    myTree.setImagePath( "{{ asset('bundles/ariicore/images/treegrid/') }}");
-    myTree.enableContextMenu(myMenu);
-    
-    globalLayout.cells("a").progressOn();
-    myTree.load( "{{ url('xml_JOE_tree') }}?cat="+Cat.join(), function() {
-        globalLayout.cells("a").progressOff();
-    });
-
-    globalLayout.cells("b").hideHeader();
-
-    dhxTabbar = globalLayout.cells("b").attachTabbar();
-    // dhxTabbar.setImagePath("{{ asset("arii/dhtmlx/dhtmlxTabbar/codebase/imgs/") }}");
-    dhxTabbar.addTab("a1", "{{ "Edit" | trans }}", 120);
-    dhxTabbar.addTab("a2", "{{ "XML View" | trans }}", 120);
-    dhxTabbar.tabs("a1").setActive();
-
-    myTree.attachEvent( "onRowDblClicked", function(id) {
-        if (this.getUserData(id,"type") === "file") {
-            dhxTabbar.cells("a2").attachURL( "{{ url('arii_JOE_file_view') }}?id="+id.substr(1) );
-        }
-        else if (this.getUserData(id,"type") === "version") {
-            dhxTabbar.cells("a2").attachURL( "{{ url('arii_JOE_file_view') }}?id="+id );
-        }
-    });
+{% block script %}
+	<script>
+dhtmlxEvent(window, "load", function() {
+	joe = new JOE(document.body, JOE_ROUTES);
+	joe.start();
 });
-</script>
-{% endblock %}
+	</script>
+{% endblock script %}

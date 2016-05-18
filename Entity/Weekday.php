@@ -108,7 +108,7 @@ class Weekday extends AbstractEntity
      *
      * @return self
      */
-    protected function setWhich($which)
+    public function setWhich($which)
     {
         $this->which = $which;
 
@@ -132,7 +132,7 @@ class Weekday extends AbstractEntity
      *
      * @return self
      */
-    protected function setDay($day)
+    public function setDay($day)
     {
         $this->day = $day;
 
