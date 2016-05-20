@@ -8,7 +8,6 @@
 
 namespace Arii\JOEBundle\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,16 +44,16 @@ class Schedule extends AbstractEntity
     protected $substitute;
 
     /**
-     * @var DateTime
+     * @var string
      *
-     * @ORM\Column(name="valid_from", type="datetime", nullable=true))
+     * @ORM\Column(name="valid_from", type="string", nullable=true))
      */
     protected $validFrom;
 
     /**
-     * @var DateTime
+     * @var string
      *
-     * @ORM\Column(name="valid_to", type="datetime", nullable=true))
+     * @ORM\Column(name="valid_to", type="string", nullable=true))
      */
     protected $validTo;
 
@@ -133,7 +132,7 @@ class Schedule extends AbstractEntity
     /**
      * Gets the value of validFrom.
      *
-     * @return DateTime
+     * @return string
      */
     public function getValidFrom()
     {
@@ -143,11 +142,11 @@ class Schedule extends AbstractEntity
     /**
      * Sets the value of validFrom.
      *
-     * @param DateTime $validFrom the valid from
+     * @param string $validFrom the valid from
      *
      * @return self
      */
-    public function setValidFrom(DateTime $validFrom)
+    public function setValidFrom($validFrom)
     {
         $this->validFrom = $validFrom;
 
@@ -157,7 +156,7 @@ class Schedule extends AbstractEntity
     /**
      * Gets the value of validTo.
      *
-     * @return DateTime
+     * @return string
      */
     public function getValidTo()
     {
@@ -167,11 +166,11 @@ class Schedule extends AbstractEntity
     /**
      * Sets the value of validTo.
      *
-     * @param DateTime $validTo the valid to
+     * @param string $validTo the valid to
      *
      * @return self
      */
-    public function setValidTo(DateTime $validTo)
+    public function setValidTo($validTo)
     {
         $this->validTo = $validTo;
 

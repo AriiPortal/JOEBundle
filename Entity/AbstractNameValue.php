@@ -16,7 +16,6 @@ abstract class AbstractNameValue extends AbstractEntity
     /**
      * @var string
      *
-     * @Assert\NotBlank()
      * @Assert\Length(max=255)
      * @ORM\Column(name="name", type="string", length=255)
      */
@@ -25,9 +24,7 @@ abstract class AbstractNameValue extends AbstractEntity
     /**
      * @var string
      *
-     * @Assert\NotBlank()
-     * @Assert\Length(max=255)
-     * @ORM\Column(name="value", type="string", length=255)
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $value;
 

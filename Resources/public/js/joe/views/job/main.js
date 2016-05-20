@@ -1,72 +1,10 @@
-(function() {
-	/* ############# TAB SCRIPT ############# */
-	function tabScript (binder) {
-		this.binder = binder;
-	}
+joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
+joe.loader.load('templates/script', function (script) {
+joe.loader.load('templates/includes', function (includes) {
+joe.loader.load('templates/onerror', function (onerror) {
+joe.loader.load('views/job/runoptions/startwhendirectorychanged', function (swdc) {
+joe.loader.load('templates/documentation', function (documentation) {
 
-	tabScript.prototype = new View();
-
-	tabScript.prototype.setup = function (parent) {
-		var formDesc = [
-			{ type:"combo", name:"tab_script_combo", label:"Function-/Code-Snippets", labelWidth:150, inputWidth:140 },
-			{ type:"input", name:"script.code", rows:"10", inputWidth:600 }
-		];
-
-		var fields = [
-			/*{ 'name': 'tab_script_combo', 'type': 'combo', 'default': 'not implemented yet' }
-			,*/ { 'name': 'script.code' }
-		]
-
-		var obj = parent.attachForm(formDesc);
-		this.form = new Form(obj, fields, this.binder);
-	}
-
-	tabScript.prototype.destroy = function () {
-		this.form.destroy();
-	}
-
-	/* ############# TAB INCLUDES ############# */
-	function tabIncludes (binder) {
-		this.binder = binder;
-	}
-
-	tabIncludes.prototype = new View();
-
-	tabIncludes.prototype.setup = function (parent) {
-		var str = [
-			{ type:"block", name:"block1", list:[
-				{ type:"checkbox", name:"tab_includes_hfcb" },
-				{ type:"newcolumn" },
-				{ type:"input", name:"tab_includes_hfinput", label:"from Hot Folder", labelAlign:"left" }
-			] },
-			{ type:"container", name:"container", inputWidth:400, inputHeight:200 },
-			{ type:"newcolumn" },
-			{ type:"block", name:"block2", list:[
-				{ type:"button", name:"new", value:"New", width:"150" },
-				{ type:"button", name:"add", value:"Add File", width:"150" },
-				{ type:"button", name:"remove", value:"Remove File", width:"150" }
-			] }
-		];
-		var obj = parent.attachForm(str);
-		var grid = new dhtmlXGridObject(obj.getContainer('container'));
-		var fields = [
-			/*{ 'name': 'tab_includes_hfcb', 'type': 'checkbox', 'default': false }
-			, { 'name': 'tab_includes_hfinput', 'default': 'not implemented yet' }*/
-		];
-
-		this.form = new Form(obj, fields, this.binder);
-
-		grid.setHeader(["Name","File / Live File"]);
-		grid.setColTypes("ro,ro");
-		grid.setColSorting('str,str');
-		grid.setInitWidths('*,*');
-		grid.init();
-
-	}
-
-	tabIncludes.prototype.destroy = function () {
-		this.form.destroy();
-	}
 
 	/* ############# TAB OPTIONS ############# */
 	function tabOptions (binder) {
@@ -86,11 +24,11 @@
 				{ type:"newcolumn" },
 				{ type:"checkbox", name:"stopOnError", label:"Stop On Error" }
 			] },
-			{ type:"combo", name:"logLevel", label:"Log Level", labelWidth:150, inputWidth:140 },
+			/*{ type:"combo", name:"logLevel", label:"Log Level", labelWidth:150, inputWidth:140 },
 			{ type:"combo", name:"stdErrLogLevel", label:"StdErr Loglevel", labelWidth:150, inputWidth:140 },
 			{ type:"combo", name:"history", label:"History", labelWidth:150, inputWidth:140 },
 			{ type:"combo", name:"historyOnProcess", label:"History on Process", labelWidth:150, inputWidth:140 },
-			{ type:"combo", name:"historyWithLog", label:"History With Log", labelWidth:150, inputWidth:140 },
+			{ type:"combo", name:"historyWithLog", label:"History With Log", labelWidth:150, inputWidth:140 }, */
 			{ type:"block", name:"form_block_2", list:[
 				{ type:"input", name:"ignoreSignals", label:"Ignore Signals", labelWidth:150  },
 				{ type:"newcolumn" },
@@ -191,7 +129,7 @@
 			, { 'name': 'historyOnProcess', 'type': 'combo', 'default': 'not implemented yet' }
 			, { 'name': 'historyWithLog', 'type': 'combo', 'default': 'not implemented yet' }*/
 			, { 'name': 'ignoreSignals', 'toAPI': signalToAPI, 'toForm': signalToForm}
-			, { 'name': 'priority', 'type': 'combo' }
+			, { 'name': 'priority' }
 			, { 'name': 'visible'}
 			, { 'name': 'tasks' }
 			, { 'name': 'minTasks' }
@@ -245,125 +183,6 @@
 	}
 
 	tabEmail.prototype.destroy = function () {
-		this.form.destroy();
-	}
-
-	/* ############# TAB ONERROR ############# */
-	function tabOnError (binder) {
-		this.binder = binder;
-	}
-
-	tabOnError.prototype = new View();
-
-	tabOnError.prototype.setup = function (parent) {
-		var str = [
-			{ type:"block", name:"form_block_1", list:[
-				{ type:"input", name:"errorCount", label:"Error Count", disabled:true },
-				{ type:"newcolumn" },
-				{ type:"radio", name:"action", label:"Stop", value:"stop", disabled:true, position:"label-right" },
-				{ type:"newcolumn" },
-				{ type:"radio", name:"action", label:"Delay", value:"delay", disabled:true, position:"label-right" },
-				{ type:"newcolumn" },
-				{ type:"input", name:"hh", labelAlign:"left", inputWidth:30, disabled:true },
-				{ type:"newcolumn" },
-				{ type:"label", name:"form_label_1", label:":" },
-				{ type:"newcolumn" },
-				{ type:"input", name:"mm", inputWidth:30, disabled:true },
-				{ type:"newcolumn" },
-				{ type:"label", name:"form_label_2", label:":" },
-				{ type:"newcolumn" },
-				{ type:"input", name:"ss", inputWidth:30, disabled:true },
-				{ type:"newcolumn" },
-				{ type:"label", name:"label", label:"[hh:mm:]ss" }
-			] },
-			{ type:"container", name:"container", inputWidth:400, inputHeight:200 },
-			{ type:"newcolumn" },
-			{ type:"button", name:"apply", value:"Apply Delay", width:"125" },
-			{ type:"button", name:"new", value:"New Delay", width:"125" },
-			{ type:"button", name:"remove", value:"Remove Delay", width:"125" }
-		];
-		var obj = parent.attachForm(str);
-		var grid = new dhtmlXGridObject(obj.getContainer('container'));
-		var fields = [];
-
-		grid.setHeader(["Error Count","Delay [hh:mm:]ss"]);
-		grid.setColTypes("ro,ro");
-		grid.setColSorting('str,str');
-		grid.setInitWidths('*,*');
-		grid.init();
-
-		this.form = new Form(obj, fields, this.binder);
-	}
-
-	tabOnError.prototype.destroy = function () {
-		this.form.destroy();
-	}
-
-	/* ############# TAB FILEWATCHER ############# */
-	function tabFileWatcher (binder) {
-		this.binder = binder;
-	}
-
-	tabFileWatcher.prototype = new View();
-
-	tabFileWatcher.prototype.setup = function (parent) {
-		var str = [
-			{ type:"block" , name:"form_block_1", list:[
-				{ type:"input", name:"watchDirectory", label:"Watch Directory" },
-				{ type:"newcolumn" },
-				{ type:"input", name:"fileRegex", label:"File Regex" }
-			] },
-			{ type:"container", name:"container", inputWidth:400, inputHeight:200 },
-			{ type:"newcolumn" },
-			{ type:"button", name:"apply", value:"Apply Dir", width:"125" },
-			{ type:"button", name:"new", value:"New Dir", width:"125" },
-			{ type:"button", name:"remove", value:"Remove Dir", width:"125" }
-		];
-		var obj = parent.attachForm(str);
-		var grid = new dhtmlXGridObject(obj.getContainer('container'));
-		var fields = [];
-
-		grid.setHeader(["Directory","Regex"]);
-		grid.setColTypes("ro,ro");
-		grid.setColSorting('str,str');
-		grid.setInitWidths('*,*');
-		grid.init();
-
-		this.form = new Form(obj, fields, this.binder);
-	}
-
-	tabFileWatcher.prototype.destroy = function () {
-		this.form.destroy();
-	}
-
-	/* ############# TAB DOCUMENTATION ############# */
-	function tabDocumentation (binder) {
-		this.binder = binder;
-	}
-
-	tabDocumentation.prototype = new View();
-
-	tabDocumentation.prototype.setup = function (parent) {
-		var str = [
-			{ type:"fieldset", name:"fieldsetComment", label:"Comment", list: [
-				{ type:"input", name:"comment", label:"", rows:"5" }
-			]},
-			{ type:"fieldset", name:"fieldsetDescription", label:"Job Description", list: [
-				{ type:"input", name:"description", label:"" },
-				{ type:"input", name:"content", label:"", rows:"5" },
-				{ type:"newcolumn" },
-				{ type:"checkbox", name:"inLiveFolder", label:"in Live Folder", position:"label-right" },
-				{ type:"button", name:"show", value:"Show", width:"125" },
-				{ type:"button", name:"open", value:"Open", width:"125" },
-				{ type:"button", name:"wizard", value:"Wizard", width:"125" }
-			]}
-		];
-		var obj = parent.attachForm(str);
-		var fields = [];
-		this.form = new Form(obj, fields, this.binder);
-	}
-
-	tabDocumentation.prototype.destroy = function () {
 		this.form.destroy();
 	}
 
@@ -447,16 +266,8 @@
 		var formJson = [
 			{ type:"input", name:"name", label:"Job Name", labelWidth:150 },
 			{ type:"input", name:"title", label:"Job Title", labelWidth:150 },
-			{ type:"block", name:"block", list:[
-				{ type:"label", name:"label", label:"Process Class" },
-				{ type:"newcolumn" },
-				{ type:"button", name:"arrow", value:">" },
-				{ type:"newcolumn" },
-				{ type:"combo", name:"processClass", inputWidth:140},
-				{ type:"newcolumn" },
-				{ type:"button", name:"showDir", value:"Show Dir" }
-			] },
-			{ type:"combo" , name:"script.language", label:"Language", labelWidth:150, inputWidth:140, options:[
+			{ type:"combo", name:"processClass", labelWidth:150, label:"Process Class", inputWidth:150},
+			{ type:"combo" , name:"script.language", label:"Language", labelWidth:150, inputWidth:150, options:[
 				{ value:"shell", text:"shell" },
 				{ value:"java", text:"java" },
 				{ value:"javascript", text:"javascript" },
@@ -474,7 +285,7 @@
 			{ 'name': 'name' }
 			, { 'name': 'title' }
 			, { 'name': 'script.language', 'default': 'shell'}
-			, { 'name': 'processClass', type: 'combo' }
+			, { 'name': 'processClass' }
 		];
 
 		this.form = new Form(obj, fields, this.binder);
@@ -482,16 +293,21 @@
 		this.cellGeneral.setText(this.binder.data.name);
 		this.cellExtras.hideHeader();
 
+		this.extraBinders = [];
+
 		var tabs = [
 			{
 				id: 'script',
 				label: 'Script',
-				view: tabScript
+				view: script
 			},
 			{
 				id: 'includes',
 				label: 'Includes',
-				view: tabIncludes
+				view: includes,
+				binder: new EntityBinder('includeFile',
+										 this.binder,
+										 'script.includes')
 			},
 			{
 				id: 'options',
@@ -508,17 +324,23 @@
 			{
 				id: 'onerror',
 				label: 'onError',
-				view: tabOnError
+				view: onerror,
+				binder: new EntityBinder('delayAfterError',
+										 this.binder,
+										 'delayAfterError')
 			},
 			{
 				id: 'filewatcher',
 				label: 'File Watcher',
-				view: tabFileWatcher
+				view: swdc,
+				binder: new EntityBinder('startWhenDirectoryChanged',
+										 this.binder,
+										 'startWhenDirectoryChanged')
 			},
 			{
 				id: 'documentation',
 				label: 'Documentation',
-				view: tabDocumentation
+				view: documentation
 			},
 			{
 				id: 'xml',
@@ -531,7 +353,19 @@
 		{
 			var t = tabs[i];
 			tabbar.addTab(t.id, t.label);
-			var view = new t.view(this.binder);
+
+			var binder;
+
+			if (t.hasOwnProperty('binder'))
+			{
+				binder = t.binder;
+				this.extraBinders.push(binder);
+			}
+			else
+				binder = this.binder;
+
+			var binder = t.hasOwnProperty('binder') ? t.binder : this.binder;
+			var view = new t.view(binder);
 			var parent = tabbar.tabs(t.id);
 
 			if (i == 0)
@@ -566,8 +400,10 @@
 			this.tabViews[key].destroy();
 		}
 
-		this.binder.unregister(this);
+		this.extraBinders.map(x => x.destroy());
+
 		this.form.destroy();
+		this.binder.unregister(this);
 	}
 
 
@@ -577,4 +413,10 @@
 	}
 
 	joe.loader.finished(build);
-})();
+
+})
+})
+})
+})
+})
+});

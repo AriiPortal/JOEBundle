@@ -181,9 +181,9 @@ class Job extends AbstractEntity
     protected $warnIfShorterThan;
 
     /**
-     * @var IncludeFile
+     * @var Description
      *
-     * @ORM\OneToOne(targetEntity="IncludeFile", cascade={"all"})
+     * @ORM\OneToOne(targetEntity="Description", cascade={"all"})
      * @ORM\JoinColumn(name="description_id", referencedColumnName="id")
      */
     protected $description;
@@ -762,7 +762,7 @@ class Job extends AbstractEntity
     /**
      * Get description
      *
-     * @return IncludeFile
+     * @return Description
      */
     public function getDescription()
     {
@@ -772,9 +772,9 @@ class Job extends AbstractEntity
     /**
      * Set description
      *
-     * @param IncludeFile description
+     * @param Description description
      */
-    public function setDescription(IncludeFile $description)
+    public function setDescription(Description $description)
     {
         $this->description = $description;
         return $this;

@@ -33,7 +33,6 @@ class Monitor extends AbstractEntity
     /**
      * @var integer
      *
-     * @Assert\NotBlank()
      * @Assert\Length(max=255)
      * @ORM\Column(name="ordering", type="integer", length=255, nullable=true)
      */

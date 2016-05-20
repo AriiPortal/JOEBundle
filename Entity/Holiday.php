@@ -8,7 +8,6 @@
 
 namespace Arii\JOEBundle\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,14 +22,14 @@ class Holiday extends AbstractEntity
     /**
      * @var DateTime
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="date", type="string")
      */
     protected $date;
 
     /**
      * Gets the value of date.
      *
-     * @return DateTime
+     * @return string
      */
     public function getDate()
     {
@@ -40,11 +39,11 @@ class Holiday extends AbstractEntity
     /**
      * Sets the value of date.
      *
-     * @param DateTime $date the date
+     * @param string $date the date
      *
      * @return self
      */
-    public function setDate(DateTime $date)
+    public function setDate(string $date)
     {
         $this->date = $date;
 

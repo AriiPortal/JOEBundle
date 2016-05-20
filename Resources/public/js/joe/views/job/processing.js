@@ -6,21 +6,18 @@ joe.loader.load('utils/binder/entity_binder', function(EntityBinder) {
 		{ name: 'ordering', label: 'Ordering' }
 	];
 
-	function uniqueOrdering(entities)
+	function uniqueOrdering(grid)
 	{
 		var  i = 0;
 		while (true)
 		{
 			var exists = false;
 
-			for (var key in entities)
-			{
-				if (entities[key].ordering == i)
-				{
+
+			grid.forEachRow(function (rid) {
+				if (grid.cellById(rid, 1).getValue() == i)
 					exists = true;
-					break;
-				}
-			}
+			});
 
 			if (!exists)
 			{
@@ -33,7 +30,7 @@ joe.loader.load('utils/binder/entity_binder', function(EntityBinder) {
 
 	function newProcess(adder)
 	{
-		var ordering = uniqueOrdering(adder.grid.entities);
+		var ordering = uniqueOrdering(adder.grid.grid);
 		var name = 'process' + String(ordering);
 		adder.grid.create({
 			name: name,
@@ -56,9 +53,11 @@ joe.loader.load('utils/binder/entity_binder', function(EntityBinder) {
 	var build = function(binder) {
 		var view = new DefaultEntityAdder('monitor', rowDesc, controlDesc, binder);
 
-		view.destroy = function() {
-			binder.destroy();
-		}
+		view.init = function() {
+			view.grid.onDoubleClick = function (data) {
+				joe.view.load('views/job/processing/process', data.binder);
+			}
+		};
 
 		return view;
 	}

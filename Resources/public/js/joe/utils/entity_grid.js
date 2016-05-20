@@ -1,10 +1,14 @@
 var EntityGrid = (function() {
 
-	function onReset(data) {
+	function onInit(data) {
 		this.grid.clearAll();
 
 		for (var key in data)
 			this.addRow(data[key])
+	}
+
+	function onUpdate(id, data) {
+		this.updateRow(id, data.data);
 	}
 
 	function onCreate (data) {
@@ -46,8 +50,8 @@ var EntityGrid = (function() {
 		this.grid.init();
 
 		var callbacks = {
-			onInit: onReset.bind(this),
-			onUpdate: onReset.bind(this),
+			onInit: onInit.bind(this),
+			onUpdate: onUpdate.bind(this),
 			onCreate: onCreate.bind(this),
 			onRemove: onRemove.bind(this)
 		};

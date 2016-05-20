@@ -4,13 +4,16 @@
  */
 var CollectionNode = (function() {
 
-	function onReset(data) {
+	function onInit(data) {
 		this.removeChildren();
 
 		for (var key in data)
 			this.addChild(data[key]);
 
 		this.refresh();
+	}
+
+	function onUpdate(id, data) {
 	}
 
 	function onCreate (data) {
@@ -69,8 +72,8 @@ var CollectionNode = (function() {
 
 	CollectionNode.prototype.loadChildren = function(callback) {
 		var callbacks = {
-			onInit: onReset.bind(this),
-			onUpdate: onReset.bind(this),
+			onInit: onInit.bind(this),
+			onUpdate: onUpdate.bind(this),
 			onCreate: onCreate.bind(this),
 			onRemove: onRemove.bind(this)
 		};

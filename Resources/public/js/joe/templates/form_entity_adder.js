@@ -76,7 +76,7 @@ joe.loader.load('utils/entity_grid', function (EntityGrid) {
 			}.bind(this);
 
 			this.disableForm();
-			
+
 		};
 
 		FormEntityAdder.prototype.create = function () {
@@ -93,11 +93,14 @@ joe.loader.load('utils/entity_grid', function (EntityGrid) {
 		}
 
 		FormEntityAdder.prototype.update = function () {
-			this.grid.update(this.current
-						   , this.formToData(this.forms.user)
-						   , function () {
-							   this.disableForm();
-						   }.bind(this));
+			if (this.current)
+			{
+				this.grid.update(this.current
+								 , this.formToData(this.forms.user)
+								 , function () {
+									 this.disableForm();
+								 }.bind(this));
+			}
 		}
 
 		FormEntityAdder.prototype.remove = function () {
@@ -106,6 +109,7 @@ joe.loader.load('utils/entity_grid', function (EntityGrid) {
 				this.grid.remove(this.current, function () {
 					this.disableForm();
 				}.bind(this));
+				this.current = null;
 			}
 		}
 

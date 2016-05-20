@@ -1,6 +1,19 @@
 joe.loader.load('utils/binder/standalone_binder', function(StandaloneBinder) {
 joe.loader.load('utils/binder/entity_binder', function(EntityBinder) {
+joe.loader.load('tree/build/runtime', function(RuntimeNode) {
+
 	var buildTree = (function() {
+
+		function genRuntimeNode(topview, binder) {
+			var node = new RuntimeNode(binder);
+
+			node.onClick = function() {
+				joe.view.load(topview, binder);
+			}
+
+			node.init(true, "Run Time");
+			return node;
+		}
 
 		function genLoadViewNode(label, view) {
 			var builder = function (binder) {
@@ -14,11 +27,6 @@ joe.loader.load('utils/binder/entity_binder', function(EntityBinder) {
 				return node;
 			}
 			return builder;
-		}
-
-
-		function jobProcess (binder) {
-
 		}
 
 		function jobProcessing(binder)
@@ -46,24 +54,56 @@ joe.loader.load('utils/binder/entity_binder', function(EntityBinder) {
 				joe.view.load('views/job/processing', binder);
 			};
 
-			monitors.init(true, 'Pre-/Post-Processing');
+			monitors.init(false, 'Pre-/Post-Processing');
 			return monitors;
 		}
 
-		jobSub = [
+
+		function jobCommands(binder)
+		{
+			var selector =  { onExitCode: true };
+			function jobCommand (binder) {
+				var node = new DataNode(binder, selector);
+
+				node.onClick = function() {
+					joe.view.load('views/job/commands/main', binder);
+				}
+
+				node.receive = function (data) {
+					node.setVisible(true);
+					node.tree.obj.setItemText(node.obj.id, data.onExitCode);
+				}
+
+				node.init(true, "");
+				return node;
+			}
+
+			var binder = new EntityBinder('commands', binder, 'commandsCollection');
+			var monitors = new CollectionNode(target, binder, jobCommand,  selector);
+
+			monitors.onClick = function () {
+				joe.view.load('views/job/commands', binder);
+			};
+
+			monitors.init(false, 'Commands');
+
+			monitors.destroy = function() {
+				CollectionNode.prototype.destroy.call(this);
+				binder.destroy();
+			}
+			return monitors;
+		}
+
+		var jobSub = [
 			genLoadViewNode('Options', 'views/job/options'),
 			genLoadViewNode('Parameter', 'views/job/parameter'),
-			genLoadViewNode('Job Settings', 'views/job/settings'),
 			jobProcessing,
 			genLoadViewNode('Run options', 'views/job/runoptions'),
 			genLoadViewNode('Locks used', 'views/job/locksused'),
 			genLoadViewNode('Monitors used', 'views/job/monitorsused'),
-
-			/* TODO: Real runtime node gen */
-			genLoadViewNode('Run Time', 'views/job/runtime'),
-
-			genLoadViewNode('Commands', 'views/job/commands'),
-			genLoadViewNode('Documentation', 'views/job/documentation')
+			genRuntimeNode.bind(null, 'templates/runtime'),
+			jobCommands,
+			genLoadViewNode('Documentation', 'templates/documentation')
 		];
 
 		function addJobs(tree) {
@@ -77,7 +117,7 @@ joe.loader.load('utils/binder/entity_binder', function(EntityBinder) {
 				node.loadChildren = function(callback) {
 					for (var i = 0; i < jobSub.length; i++)
 					{
-						var sub = (jobSub[i])(binder);
+						var sub = (jobSub[i])(binder, tree);
 						sub.addTo(tree, node.obj.id);
 					}
 					callback();
@@ -105,14 +145,27 @@ joe.loader.load('utils/binder/entity_binder', function(EntityBinder) {
 		}
 
 
+		var chainSub = [
+			genLoadViewNode('Steps/Nodes', 'views/job/steps'),
+			genLoadViewNode('Nested Job Chains', 'views/chain/nested'),
+		];
+
 		function addChains(tree) {
 			function chain (binder) {
 				var node = new DataNode(binder, { name: true });
 
 				node.onClick = function() {
-					console.log("loadInterface: ", binder.id);
+					joe.view.load('views/chain/main', binder);
 				}
 
+				node.loadChildren = function(callback) {
+					for (var i = 0; i < chainSub.length; i++)
+					{
+						var sub = (chainSub[i])(binder);
+						sub.addTo(tree, node.obj.id);
+					}
+					callback();
+				}
 
 				node.receive = function (data) {
 					node.setVisible(true);
@@ -248,5 +301,6 @@ joe.loader.load('utils/binder/entity_binder', function(EntityBinder) {
 	})();
 
 	joe.loader.finished(buildTree);
+});
 });
 });

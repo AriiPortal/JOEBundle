@@ -1,56 +1,49 @@
 joe.loader.load('templates/default_entity_adder', function(DefaultEntityAdder) {
-joe.loader.load('utils/binder/standalone_binder', function(EntityBinder) {
+joe.loader.load('utils/binder/entity_binder', function(EntityBinder) {
 
-	function hasSuccess(entities)
+	function hasSuccess(grid)
 	{
-		for (var key in entities)
-		{
-			if (entities[key].onExitCode == 0
-			 || entities[key].onExitCode == 'success')
-			{
-				return true;
-			}
-		}
+		var exist = false;
+		grid.forEachRow(function (rid) {
+			if (grid.cellById(rid, 0).getValue() == 'success')
+				exist = true;
+		});
 
-		return false;
+		return exist;
 	}
 
-	function hasError(entities)
+	function hasError(grid)
 	{
-		for (var key in entities)
-		{
-			if (entities[key].onExitCode == 'error')
-			{
-				return true;
-			}
-		}
+		var exist = false;
+		grid.forEachRow(function (rid) {
+			if (grid.cellById(rid, 0).getValue() == 'error')
+				exist = true;
+		});
 
-		return false;
+		return exist;
 	}
 
-	function genExitCode(entities)
+	function genExitCode(grid)
 	{
-		if (!hasSuccess(entities))
+		if (!hasSuccess(grid))
 		{
 			return 'success';
 		}
-		if (!hasError(entities))
+		if (!hasError(grid))
 		{
 			return 'error';
 		}
 
 		var i = 1;
-		var exists = false;
 		while (true)
 		{
-			for (var key in entities)
-			{
-				if (entities[key].onExitCode == i)
-				{
+			var exists = false;
+			grid.forEachRow(function (rid) {
+				if (grid.cellById(rid, 0).getValue() == i)
 					exists = true;
-					break;
-				}
-			}
+			});
+
+
 			if (!exists)
 			{
 				return String(i);
@@ -62,7 +55,7 @@ joe.loader.load('utils/binder/standalone_binder', function(EntityBinder) {
 	function newCommand(adder)
 	{
 		adder.grid.create({
-			onExitCode: genExitCode(adder.grid.entities)
+			onExitCode: genExitCode(adder.grid.grid)
 		});
 	}
 
@@ -85,15 +78,10 @@ joe.loader.load('utils/binder/standalone_binder', function(EntityBinder) {
 	];
 
 	var build = function (binder) {
-		var binder = new EntityBinder('commands', binder, 'commandsCollections');
-		var view = DefaultEntityAdder('commands', rowDesc, ctrlDesc, binder);
-
-		view.destroy = function () {
-			binder.destroy();
-		};
+		var view = new DefaultEntityAdder('commands', rowDesc, ctrlDesc, binder);
+		return view;
 	};
 
 	joe.loader.finished(build);
 });
 });
->>>>>>> 533aa722e54c423886385d709cd1c68a94bfa51d

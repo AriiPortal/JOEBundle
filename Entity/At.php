@@ -23,7 +23,7 @@ class At extends AbstractEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="at", type="string")
+     * @ORM\Column(name="at", type="string", nullable=true)
      */
     protected $at;
 

@@ -21,6 +21,10 @@ arii_JOE_readme:
     pattern:  /
     defaults: { _controller: AriiJOEBundle:Default:readme }
 
+arii_JOE_fetchall:
+    pattern:  /fetchall
+    defaults: { _controller: AriiJOEBundle:Default:fetchall }
+
 # ===============================================================================
 # API ROUTES
 # -------------------------------------------------------------------------------

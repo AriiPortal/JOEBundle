@@ -104,7 +104,6 @@ class AddOrder extends At
      */
     public function __construct()
     {
-        $this->at = new DateTime;
         return parent::__construct();
     }
 

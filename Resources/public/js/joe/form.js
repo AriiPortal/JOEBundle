@@ -66,25 +66,25 @@ var Form = (function() {
 	}
 
 	/* Called uppon receiving data from the binder */
-	function receiveData (data) {
-		bindFormData(this.obj, data, this.desc);
+	function receiveData (form, desc, data) {
+		bindFormData(form, data, desc);
 	}
 
 	function Form(obj, desc, binder) {
 		this.obj = obj;
 		this.binder = binder;
-		this.desc = desc;
+		this.desc = desc.slice();
 
-		this.obj.attachEvent('onChange', onChange.bind(this));
 		var selector = descToSelector(desc);
 
-		var receive = receiveData.bind(this);
+		var receive = receiveData.bind(this, obj, this.desc);
 		var callbacks = {
 			onInit: receive,
 			onUpdate: receive
 		}
 
 		binder.register(this, callbacks, selector);
+		this.obj.attachEvent('onChange', onChange.bind(this));
 	}
 
 	function getValue(data, namespace) {
@@ -129,10 +129,6 @@ var Form = (function() {
 			break;
 		case 'radio':
 			form.checkItem(field.name, value);
-			break;
-		case 'combo':
-			form.getCombo(field.name).setComboText(value);
-			form.getCombo(field.name).setComboValue(value);
 			break;
 		}
 	}

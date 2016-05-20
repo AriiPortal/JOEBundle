@@ -18,6 +18,25 @@ class DefaultController extends Controller
         return $this->render('AriiJOEBundle:Default:routes.js.twig');
     }
 
+    public function fetchallAction()
+    {
+        $js = $this->container->get('arii_joe.job_scheduler');
+        $js_obj = $js->fetchAll();
+
+        $j = $this->container->get('arii_joe.job');
+        $jc = $this->container->get('arii_joe.job_chain');
+        $o = $this->container->get('arii_joe.order');
+
+        foreach ($js_obj->getOutput() as $js) {
+            print("Scheduler " . $js->getName()."<br/>");
+            $j->fetchAll($js);
+            $jc->fetchAll($js);
+            $o->fetchAll($js);
+            print("Done<br/>");
+        }
+        exit();
+    }
+
     public function ribbonAction()
     {
         $folder = $this->container->get('arii_core.folder');

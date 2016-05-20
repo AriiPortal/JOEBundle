@@ -129,7 +129,7 @@
 			{ 'name': 'jobScheduler.name' }
 			, { 'name': 'javaOptions' }
 			, { 'name': 'ignoreSignals', 'toAPI': signalToAPI, 'toForm': signalToForm}
-			, { 'name': 'priority', 'type': 'combo' }
+			, { 'name': 'priority' }
 			, { 'name': 'visible' }
 			, { 'name': 'minTasks' }
 			, { 'name': 'tasks' }

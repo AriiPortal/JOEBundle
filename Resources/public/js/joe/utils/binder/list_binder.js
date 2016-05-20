@@ -52,8 +52,29 @@ joe.loader.load('utils/binder/data_binder', function(DataBinder) {
 			return selector;
 		}
 
+
+		function updateHook(id, data) {
+			this._update(id, data);
+			this.deps.map(function(x) {
+				if (x.callbacks)
+				{
+					var callback = x.callbacks.onUpdate;
+					if (callback)
+						callback(id, this.data[id]);
+				}
+			}.bind(this));
+		}
+
+		ListBinder.prototype._update = function (id, data) {
+			this.data[id].data = data;
+		}
+
 		ListBinder.prototype._add = function (data) {
-			var binder = new DataBinder(this.target, data.id, this._childrenSelector());
+
+			var binder = new DataBinder(this.target,
+										data.id,
+										this._childrenSelector(),
+										updateHook.bind(this, data.id));
 			binder.feed(data);
 
 			var el = {
@@ -78,16 +99,31 @@ joe.loader.load('utils/binder/data_binder', function(DataBinder) {
 			{
 				if (current.hasOwnProperty(key))
 				{
-					/* We should update the data ? */
-					/* Feed the binder ? */
 					var data = next[key];
-					this.data[data.id].data = data;
+					this._update(data.id, data);
+					this.deps.map(function(x) {
+						if (x.callbacks && x.initialized)
+						{
+							var callback = x.callbacks.onUpdate;
+							if (callback)
+								callback(data.id, this.data[data.id]);
+						}
+					}.bind(this));
+
 					delete current[key];
 				}
 				else
 				{
 					/* We should add a new one */
-					this._add(next[key]);
+					var wrapper = this._add(next[key]);
+					this.deps.map(function(x) {
+						if (x.callbacks && x.initialized)
+						{
+							var callback = x.callbacks.onCreate;
+							if (callback)
+								callback(wrapper);
+						}
+					}.bind(this));
 					delete current[key];
 				}
 				delete next[key];
@@ -96,6 +132,14 @@ joe.loader.load('utils/binder/data_binder', function(DataBinder) {
 			/* The remaining entities have been deleted */
 			for (var key in current)
 			{
+				this.deps.map(function(x) {
+					if (x.callbacks && x.initialized)
+					{
+						var callback = x.callbacks.onRemove;
+						if (callback)
+							callback(this.data[key]);
+					}
+				}.bind(this));
 				delete this.data[key];
 			}
 
@@ -109,8 +153,6 @@ joe.loader.load('utils/binder/data_binder', function(DataBinder) {
 						x.initialized = true;
 						callback = x.callbacks.onInit;
 					}
-					else
-						callback = x.callbacks.onReset;
 
 					if (callback)
 						callback(this.data);

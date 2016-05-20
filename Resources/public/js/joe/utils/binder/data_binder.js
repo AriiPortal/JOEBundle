@@ -1,12 +1,13 @@
 joe.loader.load('utils/binder/binder', function(Binder) {
 	var DataBinder = (function() {
-		function DataBinder(target, id, preselector) {
+		function DataBinder(target, id, preselector, updateHook) {
 			this.target = target;
 			this.id = id;
 			this.deps = [];
 			this.data = {};
 			this.route = joe.routes.api(target).select(id);
 			this.preselector = preselector ? preselector : {};
+			this.updateHook = updateHook;
 		}
 
 		var toType = function(obj) {
@@ -16,6 +17,9 @@ joe.loader.load('utils/binder/binder', function(Binder) {
 		/* Select only the needed data using current selector */
 		function selectData(selector, data) {
 			var selected = {};
+
+			if (data == null)
+				return null;
 
 			for (var key in selector)
 			{
@@ -45,7 +49,9 @@ joe.loader.load('utils/binder/binder', function(Binder) {
 			{
 				if (dest.hasOwnProperty(key))
 				{
-					if (toType(src[key]) !== toType(dest[key]))
+					if (dest[key] != null && src[key] != null &&
+						toType(src[key]) !== toType(dest[key])
+					   )
 					{
 						console.error("Type error");
 						continue;
@@ -53,10 +59,18 @@ joe.loader.load('utils/binder/binder', function(Binder) {
 
 					if (toType(src[key]) == "object")
 					{
-						var subdiff = data_merge(src[key], dest[key]);
-						if (Object.keys(subdiff).length > 0)
+						if (dest[key] == null)
 						{
-							diff[key] = subdiff;
+							dest[key] = src[key];
+							diff[key] = src[key];
+						}
+						else
+						{
+							var subdiff = data_merge(src[key], dest[key]);
+							if (Object.keys(subdiff).length > 0)
+							{
+								diff[key] = subdiff;
+							}
 						}
 					}
 					else
@@ -147,18 +161,26 @@ joe.loader.load('utils/binder/binder', function(Binder) {
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", this.route.update, true);
 			xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-			xhr.send(JSON.stringify(diff));
+			xhr.responseType = 'json';
 
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4 && xhr.status < 400)  // The operation is complete
 				{
-					this._mergeRefresh(diff);
+					this._mergeRefresh(xhr.response);
+
+					if (this.updateHook)
+						this.updateHook(xhr.response);
+
 					if (callback)
-					{
-						callback();
-					}
+						callback(xhr.response);
 				}
 			}.bind(this);
+			xhr.send(JSON.stringify(diff));
+		}
+
+		DataBinder.prototype.unregister = function(obj) {
+			Binder.prototype.unregister.call(this, obj);
+			this.data = selectData(this.selector(), this.data);
 		}
 
 		DataBinder.prototype._refresh = function (diff) {
@@ -176,7 +198,7 @@ joe.loader.load('utils/binder/binder', function(Binder) {
 						callback = x.callbacks.onUpdate;
 
 					if (callback)
-						callback(diff);
+						callback(this.data);
 				}
 			});
 		}

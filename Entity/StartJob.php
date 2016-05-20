@@ -85,7 +85,6 @@ class StartJob extends At
      */
     public function __construct()
     {
-        $this->at                   = new DateTime;
         $this->environmentVariables = new ArrayCollection;
         return parent::__construct();
     }

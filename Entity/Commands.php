@@ -219,6 +219,30 @@ class Commands extends AbstractEntity
     }
 
     /**
+     * Gets the value of onExitCode.
+     *
+     * @return string
+     */
+    public function getOnExitCode()
+    {
+        return $this->onExitCode;
+    }
+
+    /**
+     * Sets the value of onExitCode.
+     *
+     * @param string $onExitCode the onExitCode
+     *
+     * @return self
+     */
+    public function setOnExitCode($onExitCode)
+    {
+        $this->onExitCode = $onExitCode;
+
+        return $this;
+    }
+
+    /**
      * Get addJobsCollection
      *
      * @return ArrayCollection

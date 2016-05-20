@@ -9,7 +9,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		{ type: 'input', name: 'directory', label: 'Watch Directory' },
 		{ type: 'newcolumn' },
 		{ type: 'input', name: 'regex', label: 'File Regex' }
-	];	
+	];
 
 	var ctrlsDesc = [
 		{ label: 'Apply Dir', action: applyDir },
@@ -18,12 +18,12 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 	];
 
 	var editMode = false;
-	
+
 	function dataToForm(form, data)
 	{
 		var directory = '';
 		var regex = '';
-		
+
 		if (data)
 		{
 			directory = data.directory;
@@ -32,7 +32,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 
 		form.setItemValue('directory', directory);
 		form.setItemValue('regex', regex);
-		
+
 		editMode = true;
 	}
 
@@ -41,7 +41,6 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		return {
 			directory: form.getItemValue('directory'),
 			regex: form.getItemValue('regex'),
-			isMaximum: form.isItemChecked('isMaximum')			
 		};
 	}
 

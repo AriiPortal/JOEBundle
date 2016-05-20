@@ -120,7 +120,7 @@ class Script extends AbstractEntity
      */
     public function addInclude(IncludeFile $include)
     {
-        $this->includes[] = $param;
+        $this->includes[] = $include;
         return $this;
     }
 

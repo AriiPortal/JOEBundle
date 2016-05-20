@@ -111,7 +111,6 @@ class ModifyOrder extends At
      */
     public function __construct()
     {
-        $this->at = new DateTime;
         return parent::__construct();
     }
 
