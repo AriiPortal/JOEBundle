@@ -1,85 +1,66 @@
-joe.loader.load('templates/script', function(script) {
-joe.loader.load('templates/includes', function(includes) {
-joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
+'use strict';
 
-	var languages = [
-		'java'
-		, 'javascript'
-		, 'VBScript'
-		, 'perlScript'
-		, 'javax.script:rhino'
-		, 'javax.script:ecmascript'
-		, 'java:javascript'
-	].map(
-		lang => ({
-			label: lang
-			, value: lang
-		})
-	);
+joe.loader.load('templates/script', function (script) {
+	joe.loader.load('templates/includes', function (includes) {
+		joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 
-	var desc = [
-		{ type: 'block', list: [
-			{ type: 'input', name: 'name', label: 'Name' },
-			{ type: 'newcolumn' },
-			{ type: 'input', name: 'ordering', label: 'Ordering' }
-		] },
-		{ type: 'combo', name: 'script.language', label: 'language', options: languages }
-	];
+			var languages = ['java', 'javascript', 'VBScript', 'perlScript', 'javax.script:rhino', 'javax.script:ecmascript', 'java:javascript'].map(function (lang) {
+				return {
+					label: lang,
+					value: lang
+				};
+			});
 
-	var fields = [
-		{ name: 'name' },
-		{ name: 'ordering' },
-		{ name: 'script.language' }
-	];
+			var desc = [{ type: 'block', list: [{ type: 'input', name: 'name', label: 'Name' }, { type: 'newcolumn' }, { type: 'input', name: 'ordering', label: 'Ordering' }] }, { type: 'combo', name: 'script.language', label: 'language', options: languages }];
 
-	var build = function (binder)
-	{
-		var views = {};
-		views.main = new View();
+			var fields = [{ name: 'name' }, { name: 'ordering' }, { name: 'script.language' }];
 
-		views.main.setup = function (parent) {
-			var layout = parent.attachLayout('2E');
-			var top = layout.cells('a');
-			var bottom = layout.cells('b');
+			var build = function build(binder) {
+				var views = {};
+				views.main = new View();
 
-			top.hideHeader();
-			bottom.hideHeader();
+				views.main.setup = function (parent) {
+					var layout = parent.attachLayout('2E');
+					var top = layout.cells('a');
+					var bottom = layout.cells('b');
 
-			var tabs = bottom.attachTabbar();
-			tabs.addTab('tabScript', 'Script');
-			tabs.addTab('tabJava', 'Java');
-			tabs.addTab('tabIncludes', 'Includes');
-			var tabScript = tabs.tabs('tabScript');
-			var tabJava = tabs.tabs('tabJava');
-			var tabIncludes = tabs.tabs('tabIncludes');
-			tabScript.setActive();
+					top.hideHeader();
+					bottom.hideHeader();
 
-			var dhtmlxForm = top.attachForm(desc);
-			dhtmlxForm.getCombo('script.language').readonly(true);
-			views.main.form = new Form(dhtmlxForm, fields, binder);
+					var tabs = bottom.attachTabbar();
+					tabs.addTab('tabScript', 'Script');
+					tabs.addTab('tabJava', 'Java');
+					tabs.addTab('tabIncludes', 'Includes');
+					var tabScript = tabs.tabs('tabScript');
+					var tabJava = tabs.tabs('tabJava');
+					var tabIncludes = tabs.tabs('tabIncludes');
+					tabScript.setActive();
 
-			views.script = new script(binder);
-			views.script.setup(tabScript);
-			views.script.init();
+					var dhtmlxForm = top.attachForm(desc);
+					dhtmlxForm.getCombo('script.language').readonly(true);
+					views.main.form = new Form(dhtmlxForm, fields, binder);
 
-			includesBinder = new EntityBinder('includeFile', binder, 'script.includes');
-			views.includes = new includes(includesBinder);
-			views.includes.setup(tabIncludes);
-			views.includes.init();
+					views.script = new script(binder);
+					views.script.setup(tabScript);
+					views.script.init();
 
-		}
+					includesBinder = new EntityBinder('includeFile', binder, 'script.includes');
+					views.includes = new includes(includesBinder);
+					views.includes.setup(tabIncludes);
+					views.includes.init();
+				};
 
-		views.main.destroy = function () {
-			views.script.destroy();
-			views.includes.destroy();
-			includesBinder.destroy();
-			views.main.form.destroy();
-		};
+				views.main.destroy = function () {
+					views.script.destroy();
+					views.includes.destroy();
+					includesBinder.destroy();
+					views.main.form.destroy();
+				};
 
-		return views.main;
-	}
+				return views.main;
+			};
 
-	joe.loader.finished(build);
-});
-});
+			joe.loader.finished(build);
+		});
+	});
 });

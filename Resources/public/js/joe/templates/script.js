@@ -1,20 +1,17 @@
+"use strict";
+
 (function () {
 
-	var desc = [
-		{ type:"input", name:"script.code", rows:"10", inputWidth:600 }
-	];
+	var desc = [{ type: "input", name: "script.code", rows: "10", inputWidth: 600 }];
 
-	var fields = [
-		{ name: 'script.code' }
-	];
+	var fields = [{ name: 'script.code' }];
 
-	var build = function (binder) {
+	var build = function build(binder) {
 		var view = new View();
 
 		view.setup = function (parent) {
 			var dhtmlxForm = parent.attachForm(desc);
 			view.form = new Form(dhtmlxForm, fields, binder);
-
 		};
 
 		view.destroy = function () {

@@ -1,14 +1,29 @@
-var JOE = (function() {
+'use strict';
 
-	function stateRibbon (itemid, state) {
-		console.log("stateRibon:", itemid, ",", state);
+var JOE = function () {
+
+	function clickRibbon(id, state) {
+		if (id == 'sync') {
+			this.ribbon.disable('sync');
+
+			var url = joe.routes.api().sync;
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", url, true);
+
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState == 4) {
+					if (xhr.status == 200) {
+						location.reload();
+					} else {
+						console.error("Could not sync: " + xhr.responseText);
+					}
+				}
+			}.bind(this);
+			xhr.send();
+		}
 	}
 
-	function clickRibbon (itemid, state) {
-		console.log("clickRibbon:", itemid, ",", state);
-	}
-
-	function JOE (anchor, routes) {
+	function JOE(anchor, routes) {
 		this.layout = new dhtmlXLayoutObject({
 			parent: anchor,
 			pattern: '2U'
@@ -20,7 +35,7 @@ var JOE = (function() {
 	}
 
 	JOE.prototype = {
-		start: function() {
+		start: function start() {
 			this.left = this.layout.cells('a');
 			this.right = this.layout.cells('b');
 
@@ -32,21 +47,20 @@ var JOE = (function() {
 			menu.setIconsPath(this.routes.ui.menu.icons);
 			menu.loadStruct(this.routes.ui.menu.url);
 
-			var ribbon = this.left.attachRibbon();
-			ribbon.setIconPath(this.routes.ui.ribbon.icons);
-			ribbon.loadStruct(this.routes.ui.ribbon.url);
-			ribbon.attachEvent("onStateChange", stateRibbon );
-			ribbon.attachEvent("onClick", clickRibbon);
+			this.ribbon = this.left.attachRibbon();
+			this.ribbon.setIconPath(this.routes.ui.ribbon.icons);
+			this.ribbon.loadStruct(this.routes.ui.ribbon.url);
+			this.ribbon.attachEvent("onClick", clickRibbon.bind(this));
 
 			var treeObj = this.left.attachTree();
 			treeObj.setImagePath("/bundles/ariicore/images/tree/");
 			this.tree = new ControlTree(treeObj);
 
-			this.loader.load('build_tree', function(buildTree) {
+			this.loader.load('build_tree', function (buildTree) {
 				buildTree(this.tree);
 			}.bind(this));
 		}
-	}
+	};
 
 	return JOE;
-})();
+}();

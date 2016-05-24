@@ -1,27 +1,27 @@
+"use strict";
+
 /*
  * CollectionNode:
  * A node that expands in multiple nodes of the same type
  */
-var CollectionNode = (function() {
+var CollectionNode = function () {
 
 	function onInit(data) {
 		this.removeChildren();
 
-		for (var key in data)
+		for (var key in data) {
 			this.addChild(data[key]);
-
-		this.refresh();
+		}this.refresh();
 	}
 
-	function onUpdate(id, data) {
-	}
+	function onUpdate(id, data) {}
 
-	function onCreate (data) {
+	function onCreate(data) {
 		this.addChild(data);
 		this.refresh();
 	}
 
-	function onRemove (data) {
+	function onRemove(data) {
 		this.removeChild(data.data.id);
 		this.refresh();
 	}
@@ -41,36 +41,31 @@ var CollectionNode = (function() {
 		var node = this.builder(data.binder);
 		this.children[data.data.id] = node;
 		node.addTo(this.tree, this.obj.id);
-	}
+	};
 
-	CollectionNode.prototype.removeChild = function(id) {
-		if (this.children.hasOwnProperty(id))
-		{
+	CollectionNode.prototype.removeChild = function (id) {
+		if (this.children.hasOwnProperty(id)) {
 			var node = this.children[id];
 			node.destroy();
 			delete this.children[id];
 		}
-	}
+	};
 
-	CollectionNode.prototype.removeChildren = function() {
-		for (var key in this.children)
-		{
+	CollectionNode.prototype.removeChildren = function () {
+		for (var key in this.children) {
 			this.removeChild(key);
 		}
-	}
+	};
 
-
-	CollectionNode.prototype.refresh = function() {
-		if (this.tree.obj.getOpenState(this.obj.id) == 1 ||
-		   this.shouldOpen == true)
-		{
+	CollectionNode.prototype.refresh = function () {
+		if (this.tree.obj.getOpenState(this.obj.id) == 1 || this.shouldOpen == true) {
 			this.tree.obj.closeItem(this.obj.id);
 			this.tree.obj.openItem(this.obj.id);
 			delete this.shouldOpen;
 		}
-	}
+	};
 
-	CollectionNode.prototype.loadChildren = function(callback) {
+	CollectionNode.prototype.loadChildren = function (callback) {
 		var callbacks = {
 			onInit: onInit.bind(this),
 			onUpdate: onUpdate.bind(this),
@@ -81,12 +76,12 @@ var CollectionNode = (function() {
 		this.binder.register(this, callbacks, {}, this.preselector);
 
 		callback();
-	}
+	};
 
-	CollectionNode.prototype.destroy = function() {
+	CollectionNode.prototype.destroy = function () {
 		Node.prototype.destroy.call(this);
 		this.binder.unregister(this);
 	};
 
 	return CollectionNode;
-})();
+}();

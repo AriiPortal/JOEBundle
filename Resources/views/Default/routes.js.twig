@@ -30,7 +30,8 @@ var JOE_ROUTES = {
 				}
 			},
 			list: ("{{ url('arii_JOE_api_list', {'target':'TARGET'}) }}"
-				   .replace('TARGET', target))
+				   .replace('TARGET', target)),
+			sync: ("{{ url('arii_JOE_api_sync') }}")
 		}
 	},
 	asset: function (target) {

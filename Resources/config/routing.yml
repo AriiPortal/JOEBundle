@@ -55,3 +55,7 @@ arii_JOE_api_list:
     pattern: /api/{target}/list
     methods: [POST]
     defaults: { _controller: AriiJOEBundle:API:list }
+
+arii_JOE_api_sync:
+    pattern: /api/sync
+    defaults: { _controller: AriiJOEBundle:API:sync }

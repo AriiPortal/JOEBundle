@@ -1,14 +1,15 @@
+'use strict';
+
 (function () {
-	function Parameter(binder)
-	{
+	function Parameter(binder) {
 		this.binder = binder;
 		this.views = {};
 	}
 
 	Parameter.prototype = new View();
 
-	Parameter.prototype.setup = function(parent) {
-		var tabbar = parent.attachTabbar()
+	Parameter.prototype.setup = function (parent) {
+		var tabbar = parent.attachTabbar();
 		tabbar.addTab('tabParameter', 'Parameter');
 		tabbar.addTab('tabEnvionment', 'Environment');
 		tabbar.addTab('tabIncludes', 'Includes');
@@ -17,15 +18,13 @@
 		var tabIncludes = tabbar.tabs('tabIncludes');
 
 		joe.loader.load('templates/environment', function () {
-			this.views.environment = new Environment(/* todo */);
-			this.views.environment.setup(tabEnvironment);
+			this.views.environment = new Environment();
+			/* todo */this.views.environment.setup(tabEnvironment);
 		});
 
 		joe.loader.load('templates/includes', function () {
-			this.views.includes = new Includes(/* todo */);
-			this.views.includes.setup(tabIncludes);
+			this.views.includes = new Includes();
+			/* todo */this.views.includes.setup(tabIncludes);
 		});
-	}
-
-
+	};
 })();

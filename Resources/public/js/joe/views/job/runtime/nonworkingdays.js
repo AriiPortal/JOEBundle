@@ -1,6 +1,7 @@
+'use strict';
+
 (function () {
-	function Holidays(binder)
-	{
+	function Holidays(binder) {
 		this.binder = binder;
 		this.views = {};
 	}
@@ -13,13 +14,13 @@
 		var bottom = layout.cells('b');
 
 		joe.loader.load('templates/datepicker', function () {
-			this.views.datepicker = new DatePicker(/* todo */);
-			this.views.datepicker.setup(top);
+			this.views.datepicker = new DatePicker();
+			/* todo */this.views.datepicker.setup(top);
 		}.bind(this));
 
 		joe.loader.load('templates/includes', function () {
-			this.views.includes = new Includes(/* todo */);
-			this.views.includes.setup(bottom);
+			this.views.includes = new Includes();
+			/* todo */this.views.includes.setup(bottom);
 		}.bind(this));
 	};
 })();

@@ -2,38 +2,39 @@
 
 joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 
-	function UltimosNode(binder) {
+	function HolidaysNode(binder) {
 		this.binder = binder;
 		this.children = {};
+		this.holidaysBinder = new EntityBinder('holidays', binder, 'runtime.holidays');
 
-		var setupUltimos = function (data) {
+		var setupHolidays = function (data) {
 			this.daysBinder = new EntityBinder('day', data.binder, 'dayCollection');
 
 			if (this.onBinder) this.onBinder();
 		}.bind(this);
 
-		var ultimosCbs = {
+		var holidaysCbs = {
 			onInit: function (data) {
-				this.ultimosData = null;
+				this.holidaysData = null;
 				for (key in data) {
-					this.ultimosData = data[key];
+					this.holidaysData = data[key];
 					break;
 				}
 
-				if (this.ultimosData == null) this.binder.create({});else setupUltimos(this.ultimosData);
+				if (this.holidaysData == null) this.holidaysBinder.create({});else setupHolidays(this.holidaysData);
 			}.bind(this),
 			onCreate: function onCreate(data) {
-				if (this.ultimosData == null) {
-					this.ultimosData = data;
-					setupUltimos(this.ultimosData);
+				if (this.holidaysData == null) {
+					this.holidaysData = data;
+					setupHolidays(this.holidaysData);
 				}
 			}
 		};
 
-		this.binder.register(this, ultimosCbs, { days: true });
+		this.holidaysBinder.register(this, holidaysCbs, { days: true });
 	}
 
-	UltimosNode.prototype = new Node();
+	HolidaysNode.prototype = new Node();
 
 	function onInit(data) {
 		for (var key in data) {
@@ -56,10 +57,10 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 	}
 
 	function dayToString(day) {
-		if (day.length == 1) return spec.ultimos[day[0]];else return day.join(' ');
+		if (day.length == 1) return spec.holidays[day[0]];else return day.join(' ');
 	}
 
-	UltimosNode.prototype._refresh = function () {
+	HolidaysNode.prototype._refresh = function () {
 		if (this.tree.obj.getOpenState(this.obj.id) == 1 || this.shouldOpen == true) {
 			this.tree.obj.closeItem(this.obj.id);
 			this.tree.obj.openItem(this.obj.id);
@@ -67,7 +68,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		}
 	};
 
-	UltimosNode.prototype._addChild = function (wrapper) {
+	HolidaysNode.prototype._addChild = function (wrapper) {
 		var node = new Node();
 		node.init(true, dayToString(wrapper.data.day));
 		node.onClick = function () {
@@ -77,7 +78,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		this.children[wrapper.data.id] = node;
 	};
 
-	UltimosNode.prototype._removeChild = function (wrapper) {
+	HolidaysNode.prototype._removeChild = function (wrapper) {
 		var node = this.children[wrapper.data.id];
 		if (node) {
 			node.destroy();
@@ -85,14 +86,14 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		}
 	};
 
-	UltimosNode.prototype._updateChild = function (id, wrapper) {
+	HolidaysNode.prototype._updateChild = function (id, wrapper) {
 		var node = this.children[id];
 		if (node) {
 			this.tree.obj.setItemText(node.obj.id, dayToString(wrapper.data.day));
 		}
 	};
 
-	UltimosNode.prototype._setupBinder = function () {
+	HolidaysNode.prototype._setupBinder = function () {
 		var callbacks = {
 			onInit: onInit.bind(this),
 			onUpdate: onUpdate.bind(this),
@@ -103,7 +104,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		this.daysBinder.register(this, callbacks, { day: true });
 	};
 
-	UltimosNode.prototype.loadChildren = function (callback) {
+	HolidaysNode.prototype.loadChildren = function (callback) {
 		if (this.daysBinder) this._setupBinder();else this.onBinder = function () {
 			this._setupBinder();
 		};
@@ -111,15 +112,16 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		callback();
 	};
 
-	UltimosNode.prototype.onClick = function () {
+	HolidaysNode.prototype.onClick = function () {
 		if (this.daysBinder) {
-			joe.view.load('templates/runtime/ultimos', this.daysBinder);
+			joe.view.load('templates/runtime/holidays', this.daysBinder);
 		}
 	};
 
-	UltimosNode.prototype.destroy = function () {
+	HolidaysNode.prototype.destroy = function () {
 		Node.prototype.destroy.call(this);
-		this.binder.unregister(this);
+		this.holidays.unregister(this);
+		this.holidaysBinder.destroy();
 
 		if (this.daysBinder) {
 			this.daysBinder.unregister(this);
@@ -127,5 +129,5 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		}
 	};
 
-	joe.loader.finished(UltimosNode);
+	joe.loader.finished(HolidaysNode);
 });

@@ -1,7 +1,8 @@
+'use strict';
+
 joe.loader.load('utils/entity_grid', function (EntityGrid) {
-	var FormEntityAdder = (function () {
-		function FormEntityAdder(target, rowDesc, dataToForm, formToData, formDesc, ctrlsDesc, binder, refresh)
-		{
+	var FormEntityAdder = function () {
+		function FormEntityAdder(target, rowDesc, dataToForm, formToData, formDesc, ctrlsDesc, binder, refresh) {
 			this.target = target;
 			this.rowDesc = rowDesc;
 			this.dataToForm = dataToForm;
@@ -32,8 +33,7 @@ joe.loader.load('utils/entity_grid', function (EntityGrid) {
 			ctrlsCell.hideHeader();
 			gridCell.hideHeader();
 
-			function genCtrlForm(parent)
-			{
+			function genCtrlForm(parent) {
 				var callbacks = {};
 
 				var formDesc = this.ctrlsDesc.map(function (ctrl, i) {
@@ -48,26 +48,21 @@ joe.loader.load('utils/entity_grid', function (EntityGrid) {
 				});
 				var form = parent.attachForm(formDesc);
 				form.attachEvent('onButtonClick', function (id) {
-					(callbacks[id])(this);
+					callbacks[id](this);
 				}.bind(this));
 			}
 
 			this.forms.user = formCell.attachForm(this.formDesc);
 			this.forms.user.attachEvent('onChange', function (name, value, state) {
-				if (this.refresh)
-				{
+				if (this.refresh) {
 					this.refresh(this.forms.user, name, value, state);
 				}
 			}.bind(this));
 
-			this.forms.ctrls = (genCtrlForm.bind(this))(ctrlsCell);
+			this.forms.ctrls = genCtrlForm.bind(this)(ctrlsCell);
 
 			var grid = gridCell.attachGrid();
-			this.grid = new EntityGrid(this.target
-									 , grid
-									 , this.rowDesc
-									 , this.binder
-			);
+			this.grid = new EntityGrid(this.target, grid, this.rowDesc, this.binder);
 
 			this.grid.onClick = function (obj) {
 				this.current = obj.data.id;
@@ -76,69 +71,60 @@ joe.loader.load('utils/entity_grid', function (EntityGrid) {
 			}.bind(this);
 
 			this.disableForm();
-
 		};
 
 		FormEntityAdder.prototype.create = function () {
 			this.grid.create(this.formToData(this.forms.user), function () {
 				this.disableForm();
 			}.bind(this));
-		}
+		};
 
-		FormEntityAdder.prototype.init = function () {
-		}
+		FormEntityAdder.prototype.init = function () {};
 
 		FormEntityAdder.prototype.destroy = function () {
 			this.grid.destroy();
-		}
+		};
 
 		FormEntityAdder.prototype.update = function () {
-			if (this.current)
-			{
-				this.grid.update(this.current
-								 , this.formToData(this.forms.user)
-								 , function () {
-									 this.disableForm();
-								 }.bind(this));
+			if (this.current) {
+				this.grid.update(this.current, this.formToData(this.forms.user), function () {
+					this.disableForm();
+				}.bind(this));
 			}
-		}
+		};
 
 		FormEntityAdder.prototype.remove = function () {
-			if (this.current)
-			{
+			if (this.current) {
 				this.grid.remove(this.current, function () {
 					this.disableForm();
 				}.bind(this));
 				this.current = null;
 			}
-		}
+		};
 
-		function toggleForm(enable)
-		{
-			this.formDesc.map(
-				item =>
-					enable
-					? this.forms.user.enableItem(item.name)
-					: this.forms.user.disableItem(item.name)
-			);
+		function toggleForm(enable) {
+			var _this = this;
+
+			this.formDesc.map(function (item) {
+				return enable ? _this.forms.user.enableItem(item.name) : _this.forms.user.disableItem(item.name);
+			});
 		}
 
 		FormEntityAdder.prototype.enableForm = function () {
 			this.dataToForm(this.forms.user, null);
-			(toggleForm.bind(this))(true);
-			if (this.refresh)
-			{
+			toggleForm.bind(this)(true);
+			if (this.refresh) {
 				this.refresh(this.forms.user);
 			}
-		}
+		};
 
 		FormEntityAdder.prototype.disableForm = function () {
 			this.dataToForm(this.forms.user, null);
-			(toggleForm.bind(this))(false);
-		}
+			toggleForm.bind(this)(false);
+		};
 
 		return FormEntityAdder;
-	})();
+	}();
 
 	joe.loader.finished(FormEntityAdder);
 });

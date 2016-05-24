@@ -1,33 +1,22 @@
+'use strict';
+
 (function () {
 
-	var desc = [
-		{ type: 'block', list: [
-			{ type: 'input', name: 'filename' },
-			{ type: 'newcolumn' },
-			{ type: 'checkbox', name: 'inlive', label: 'in Live Folder'}]},
-		{ type:"input", name:"description.content", rows:"10", inputWidth:600 }
-	];
+	var desc = [{ type: 'block', list: [{ type: 'input', name: 'filename' }, { type: 'newcolumn' }, { type: 'checkbox', name: 'inlive', label: 'in Live Folder' }] }, { type: "input", name: "description.content", rows: "10", inputWidth: 600 }];
 
-	var fields = [
-		{ name: 'description.content' }
-	];
+	var fields = [{ name: 'description.content' }];
 
-	var build = function (binder) {
+	var build = function build(binder) {
 		var view = new View();
 
-		function updateForm (data) {
+		function updateForm(data) {
 			data = data.description.includeFile;
-			if (!data)
-				return;
+			if (!data) return;
 
-			var inlive = data.file == null ;
-			if (inlive)
-				this.dhtmlxForm.checkItem('inlive');
-			else
-				this.dhtmlxForm.uncheckItem('inlive');
+			var inlive = data.file == null;
+			if (inlive) this.dhtmlxForm.checkItem('inlive');else this.dhtmlxForm.uncheckItem('inlive');
 
-			this.dhtmlxForm.setItemValue('filename',
-										 inlive ? data.liveFile : data.file);
+			this.dhtmlxForm.setItemValue('filename', inlive ? data.liveFile : data.file);
 		}
 
 		view.setup = function (parent) {
@@ -39,14 +28,13 @@
 				onUpdate: updateForm.bind(this)
 			};
 
-			var selector =  { 'description': { 'includeFile': true } };
+			var selector = { 'description': { 'includeFile': true } };
 			binder.register(this, callbacks, selector);
 
-			view.dhtmlxForm.attachEvent('onChange', function(id, value, checked) {
-				if (id != 'inlive' && id != 'filename')
-					return;
+			view.dhtmlxForm.attachEvent('onChange', function (id, value, checked) {
+				if (id != 'inlive' && id != 'filename') return;
 
-				var diff = {description:{includeFile: {}}};
+				var diff = { description: { includeFile: {} } };
 				var ptr = diff.description.includeFile;
 
 				var val = this.dhtmlxForm.getItemValue('filename');
@@ -56,7 +44,6 @@
 				ptr.liveFile = inlive ? val : null;
 
 				binder.update(diff);
-
 			}.bind(this));
 		};
 

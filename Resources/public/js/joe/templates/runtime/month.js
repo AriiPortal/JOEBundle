@@ -13,7 +13,7 @@ joe.loader.load('utils/runtimegroup', function (buildGroupForm) {
    * @param {Integer} day
    */
 		function dayToOption(day) {
-			return mkOption(toMonthdayName(day), day);
+			return mkOption(day, day);
 		}
 
 		/**
@@ -34,15 +34,15 @@ joe.loader.load('utils/runtimegroup', function (buildGroupForm) {
    */
 		function daysOptions(id) {
 			var days = this.data[id].data;
-			return daysToOptions(days.day);
+			return daysToOptions(days.month);
 		}
 
 		/**
    * initialization of the form options representing the possible values
    * for Arii\JOEBundle\Entity\Day
    */
-		var options = spec.monthdays.map(function (day, index) {
-			return mkOption(day, indexToMonthday(index));
+		var options = spec.months.map(function (month) {
+			return mkOption(month, month);
 		});
 
 		/**
@@ -54,7 +54,7 @@ joe.loader.load('utils/runtimegroup', function (buildGroupForm) {
    * @param callback
    */
 		function newDays(days, callback) {
-			this.binder.create({ day: days }, function (data) {
+			this.binder.create({ month: days }, function (data) {
 				callback(data.id);
 			});
 		}
@@ -83,8 +83,8 @@ joe.loader.load('utils/runtimegroup', function (buildGroupForm) {
    * @param callback
    */
 		function setDays(id, days, callback) {
-			this.data[id].binder.update({ day: days }, function (data) {
-				callback(data.day.length);
+			this.data[id].binder.update({ month: days }, function (data) {
+				callback(data.month.length);
 			});
 		}
 
@@ -125,9 +125,7 @@ joe.loader.load('utils/runtimegroup', function (buildGroupForm) {
 			var currentDays = [];
 
 			function formatDays(id) {
-				return data[id].data.day.map(function (day) {
-					return toMonthdayName(day);
-				}).join(" ");
+				return data[id].data.month.join(' ');
 			}
 
 			for (var key in data) {
@@ -135,13 +133,13 @@ joe.loader.load('utils/runtimegroup', function (buildGroupForm) {
 			}var description = {
 				'selects': {
 					'options': {
-						'label': 'Monthdays',
+						'label': 'Month',
 						'options': options
 					},
 					'groups': currentDays
 				},
 				'buttons': {
-					'addOption': { 'label': 'Add Monthday' },
+					'addOption': { 'label': 'Add Month' },
 					'removeGroup': { 'label': 'Remove' },
 					'addToGroup': { 'label': 'Add' },
 					'removeFromGroup': { 'label': 'Remove' },

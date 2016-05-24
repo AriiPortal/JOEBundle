@@ -385,32 +385,51 @@ class APIController extends Controller
     {
         try
         {
-            $whitelist = array("Job", "JobChain");
             $name = $this->getEntityName($target);
 
-            if (in_array($name, $whitelist))
-            {
-                $classname = '\\Arii\\JoeXmlConnectorBundle'
-                           . '\\Converter\\Specification\\'
-                           . $name;
+            $classname = '\\Arii\\JoeXmlConnectorBundle'
+                       . '\\Converter\\Specification\\'
+                       . $name;
 
-                $entity = $this->getEntity($name, $id);
+            $entity = $this->getEntity($name, $id);
 
-                $converter = new EntityToXML(
-                    $entity,
-                    $classname
-                );
+            $converter = new EntityToXML(
+                $entity,
+                $classname
+            );
 
-                $xml = $converter->toXML();
-                $response = new Response();
-                $response->setContent($xml);
-                $response->headers->set('Content-Type', 'text/xml');
-                return $response;
+            $xml = $converter->toXML();
+            $response = new Response();
+            $response->setContent($xml);
+            $response->headers->set('Content-Type', 'text/xml');
+            return $response;
+        }
+        catch(Exception $e)
+        {
+            return new Response("Error: " . $e->getMessage() . ".",
+                                Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function syncAction()
+    {
+        try
+        {
+            $js = $this->container->get('arii_joe.job_scheduler');
+            $js_obj = $js->fetchAll();
+
+            $j = $this->container->get('arii_joe.job');
+            $jc = $this->container->get('arii_joe.job_chain');
+            $o = $this->container->get('arii_joe.order');
+
+            foreach ($js_obj->getOutput() as $js) {
+                $j->fetchAll($js);
+                $jc->fetchAll($js);
+                $o->fetchAll($js);
             }
-            else
-            {
-                throw new Exception("Entity cannot be exported as XML");
-            }
+
+            print("Success.");
+            exit();
         }
         catch(Exception $e)
         {

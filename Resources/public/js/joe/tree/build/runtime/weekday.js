@@ -2,38 +2,38 @@
 
 joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 
-	function UltimosNode(binder) {
+	function WeekdayNode(binder) {
 		this.binder = binder;
 		this.children = {};
 
-		var setupUltimos = function (data) {
-			this.daysBinder = new EntityBinder('day', data.binder, 'dayCollection');
+		var setupWeekday = function (data) {
+			this.daysBinder = new EntityBinder('weekday', data.binder, 'weekdays');
 
 			if (this.onBinder) this.onBinder();
 		}.bind(this);
 
-		var ultimosCbs = {
+		var weekdayCbs = {
 			onInit: function (data) {
-				this.ultimosData = null;
+				this.weekdayData = null;
 				for (key in data) {
-					this.ultimosData = data[key];
+					this.weekdayData = data[key];
 					break;
 				}
 
-				if (this.ultimosData == null) this.binder.create({});else setupUltimos(this.ultimosData);
+				if (this.weekdayData == null) this.binder.create({});else setupWeekday(this.weekdayData);
 			}.bind(this),
 			onCreate: function onCreate(data) {
-				if (this.ultimosData == null) {
-					this.ultimosData = data;
-					setupUltimos(this.ultimosData);
+				if (this.weekdayData == null) {
+					this.weekdayData = data;
+					setupWeekday(this.weekdayData);
 				}
 			}
 		};
 
-		this.binder.register(this, ultimosCbs, { days: true });
+		this.binder.register(this, weekdayCbs, { days: true });
 	}
 
-	UltimosNode.prototype = new Node();
+	WeekdayNode.prototype = new Node();
 
 	function onInit(data) {
 		for (var key in data) {
@@ -55,11 +55,20 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		this._refresh();
 	}
 
-	function dayToString(day) {
-		if (day.length == 1) return spec.ultimos[day[0]];else return day.join(' ');
+	function whichToString(id) {
+		var which = ["Second", "Third", "Fourth"];
+		if (id == 1) return 'First';else if (id == -1) return 'Last';else {
+			var str = which[Math.abs(id) - 2];
+			if (id < 0) str += ' Last';
+			return str;
+		}
 	}
 
-	UltimosNode.prototype._refresh = function () {
+	function dayToString(day) {
+		return day.day + '.' + whichToString(day.which);
+	}
+
+	WeekdayNode.prototype._refresh = function () {
 		if (this.tree.obj.getOpenState(this.obj.id) == 1 || this.shouldOpen == true) {
 			this.tree.obj.closeItem(this.obj.id);
 			this.tree.obj.openItem(this.obj.id);
@@ -67,9 +76,9 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		}
 	};
 
-	UltimosNode.prototype._addChild = function (wrapper) {
+	WeekdayNode.prototype._addChild = function (wrapper) {
 		var node = new Node();
-		node.init(true, dayToString(wrapper.data.day));
+		node.init(true, dayToString(wrapper.data));
 		node.onClick = function () {
 			joe.view.load('templates/runtime/periods', wrapper.binder);
 		};
@@ -77,7 +86,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		this.children[wrapper.data.id] = node;
 	};
 
-	UltimosNode.prototype._removeChild = function (wrapper) {
+	WeekdayNode.prototype._removeChild = function (wrapper) {
 		var node = this.children[wrapper.data.id];
 		if (node) {
 			node.destroy();
@@ -85,14 +94,14 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		}
 	};
 
-	UltimosNode.prototype._updateChild = function (id, wrapper) {
+	WeekdayNode.prototype._updateChild = function (id, wrapper) {
 		var node = this.children[id];
 		if (node) {
-			this.tree.obj.setItemText(node.obj.id, dayToString(wrapper.data.day));
+			this.tree.obj.setItemText(node.obj.id, dayToString(wrapper.data));
 		}
 	};
 
-	UltimosNode.prototype._setupBinder = function () {
+	WeekdayNode.prototype._setupBinder = function () {
 		var callbacks = {
 			onInit: onInit.bind(this),
 			onUpdate: onUpdate.bind(this),
@@ -103,7 +112,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		this.daysBinder.register(this, callbacks, { day: true });
 	};
 
-	UltimosNode.prototype.loadChildren = function (callback) {
+	WeekdayNode.prototype.loadChildren = function (callback) {
 		if (this.daysBinder) this._setupBinder();else this.onBinder = function () {
 			this._setupBinder();
 		};
@@ -111,13 +120,13 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		callback();
 	};
 
-	UltimosNode.prototype.onClick = function () {
+	WeekdayNode.prototype.onClick = function () {
 		if (this.daysBinder) {
-			joe.view.load('templates/runtime/ultimos', this.daysBinder);
+			joe.view.load('templates/runtime/weekday', this.daysBinder);
 		}
 	};
 
-	UltimosNode.prototype.destroy = function () {
+	WeekdayNode.prototype.destroy = function () {
 		Node.prototype.destroy.call(this);
 		this.binder.unregister(this);
 
@@ -127,5 +136,5 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		}
 	};
 
-	joe.loader.finished(UltimosNode);
+	joe.loader.finished(WeekdayNode);
 });

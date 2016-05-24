@@ -1,60 +1,48 @@
-joe.loader.load('templates/default_entity_adder', function(DefaultEntityAdder) {
-joe.loader.load('utils/binder/standalone_binder', function(StandaloneBinder) {
+'use strict';
 
-	var rowDesc = [
-		{ name: 'name', label: 'Name'}
-	];
+joe.loader.load('templates/default_entity_adder', function (DefaultEntityAdder) {
+	joe.loader.load('utils/binder/standalone_binder', function (StandaloneBinder) {
 
+		var rowDesc = [{ name: 'name', label: 'Name' }];
 
-	function uniqueName(grid)
-	{
-		var i = 1;
+		function uniqueName(grid) {
+			var i = 1;
 
-		while(true)
-		{
-			var name = String(i);
-			var exists = false;
+			while (true) {
+				var name = String(i);
+				var exists = false;
 
-			grid.forEachRow(function (rid) {
-				if (grid.cellById(rid, 0).getValue() == name)
-					exists = true;
+				grid.forEachRow(function (rid) {
+					if (grid.cellById(rid, 0).getValue() == name) exists = true;
+				});
+
+				if (!exists) return name;
+
+				i++;
+			}
+		}
+
+		function newOrder(adder) {
+			var name = uniqueName(adder.grid.grid);
+			adder.grid.create({
+				name: name
 			});
-
-			if (!exists)
-				return name;
-
-			i++;
 		}
-	}
 
-	function newOrder(adder)
-	{
-		var name = uniqueName(adder.grid.grid);
-		adder.grid.create({
-			name: name
-		});
-	}
-
-
-	function delOrder(adder)
-	{
-		if (adder.selected != null)
-		{
-			adder.grid.remove(adder.selected);
+		function delOrder(adder) {
+			if (adder.selected != null) {
+				adder.grid.remove(adder.selected);
+			}
 		}
-	}
 
-	var controlDesc = [
-		{ label:"New Order", action: newOrder},
-		{ label:"Remove Order", action: delOrder}
-	];
+		var controlDesc = [{ label: "New Order", action: newOrder }, { label: "Remove Order", action: delOrder }];
 
-	var build = function(binder) {
-		var view = new DefaultEntityAdder('order', rowDesc, controlDesc, binder);
+		var build = function build(binder) {
+			var view = new DefaultEntityAdder('order', rowDesc, controlDesc, binder);
 
-		return view;
-	}
+			return view;
+		};
 
-	joe.loader.finished(build);
-})
+		joe.loader.finished(build);
+	});
 });

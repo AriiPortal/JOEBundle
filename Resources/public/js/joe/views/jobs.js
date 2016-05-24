@@ -1,71 +1,59 @@
-joe.loader.load('templates/default_entity_adder', function(DefaultEntityAdder) {
-joe.loader.load('utils/binder/standalone_binder', function(StandaloneBinder) {
+'use strict';
 
-	var rowDesc = [
-		{ name: 'enabled', label: 'Disabled', format: x => x ? 'no' : 'yes'},
-		{ name: 'name', label: 'Name'},
-		{ name: 'title', label: 'Title'},
-		{ name: 'jobScheduler.name', label: 'Scheduler id'},
-		{ name: 'processClass', label: 'Process class'},
-		{ name: 'order', label: 'Order',  format: x => x ? 'yes' : 'no'}
-	];
+joe.loader.load('templates/default_entity_adder', function (DefaultEntityAdder) {
+	joe.loader.load('utils/binder/standalone_binder', function (StandaloneBinder) {
 
-	function uniqueName(grid)
-	{
-		var i = 1;
+		var rowDesc = [{ name: 'enabled', label: 'Disabled', format: function format(x) {
+				return x ? 'no' : 'yes';
+			} }, { name: 'name', label: 'Name' }, { name: 'title', label: 'Title' }, { name: 'jobScheduler.name', label: 'Scheduler id' }, { name: 'processClass', label: 'Process class' }, { name: 'order', label: 'Order', format: function format(x) {
+				return x ? 'yes' : 'no';
+			} }];
 
-		while(true)
-		{
-			var name = "job" + String(i);
-			var exists = false;
+		function uniqueName(grid) {
+			var i = 1;
 
-			grid.forEachRow(function (rid) {
-				if (grid.cellById(rid, 1).getValue() == name)
-					exists = true;
-			});
+			while (true) {
+				var name = "job" + String(i);
+				var exists = false;
 
-			if (!exists)
-				return name;
+				grid.forEachRow(function (rid) {
+					if (grid.cellById(rid, 1).getValue() == name) exists = true;
+				});
 
-			i++;
-		}
-	}
+				if (!exists) return name;
 
-	function newJob(order, adder)
-	{
-		var name = uniqueName(adder.grid.grid);
-		adder.grid.create({
-			name: name,
-			order: order
-		});
-	}
-
-	function delJob(adder)
-	{
-		if (adder.selected != null)
-		{
-			adder.grid.remove(adder.selected);
-		}
-	}
-
-	var controlDesc = [
-		{ label:"New Standalone Job", action: newJob.bind(this, false)},
-		{ label:"New Order Job", action: newJob.bind(this, true)},
-		{ label:"Remove Job", action: delJob}
-	];
-
-	var build = function(binder) {
-		var view = new DefaultEntityAdder('job', rowDesc, controlDesc, binder);
-
-		view.init = function () {
-			view.grid.onDoubleClick = function (data) {
-				joe.view.load('views/job/main', data.binder);
+				i++;
 			}
 		}
 
-		return view;
-	}
+		function newJob(order, adder) {
+			var name = uniqueName(adder.grid.grid);
+			adder.grid.create({
+				name: name,
+				order: order
+			});
+		}
 
-	joe.loader.finished(build);
-})
+		function delJob(adder) {
+			if (adder.selected != null) {
+				adder.grid.remove(adder.selected);
+			}
+		}
+
+		var controlDesc = [{ label: "New Standalone Job", action: newJob.bind(this, false) }, { label: "New Order Job", action: newJob.bind(this, true) }, { label: "Remove Job", action: delJob }];
+
+		var build = function build(binder) {
+			var view = new DefaultEntityAdder('job', rowDesc, controlDesc, binder);
+
+			view.init = function () {
+				view.grid.onDoubleClick = function (data) {
+					joe.view.load('views/job/main', data.binder);
+				};
+			};
+
+			return view;
+		};
+
+		joe.loader.finished(build);
+	});
 });

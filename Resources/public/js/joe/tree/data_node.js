@@ -1,8 +1,10 @@
+"use strict";
+
 /*
  * DataNode:
  * A Node that uses a databinder
  */
-var DataNode = (function() {
+var DataNode = function () {
 
 	function DataNode(binder, selector) {
 		this.binder = binder;
@@ -12,11 +14,11 @@ var DataNode = (function() {
 	DataNode.prototype = new Node();
 
 	/* Called uppon receiving data from the binder */
-	DataNode.prototype.receive = function(data) {
+	DataNode.prototype.receive = function (data) {
 		/* This function should be rewritten by the calling node */
 	};
 
-	DataNode.prototype.postAdd = function() {
+	DataNode.prototype.postAdd = function () {
 		var callbacks = {
 			onInit: this.receive.bind(this),
 			onUpdate: this.receive.bind(this)
@@ -25,10 +27,10 @@ var DataNode = (function() {
 		this.binder.register(this, callbacks, this.selector);
 	};
 
-	DataNode.prototype.destroy = function() {
+	DataNode.prototype.destroy = function () {
 		Node.prototype.destroy.call(this);
 		this.binder.unregister(this);
 	};
 
 	return DataNode;
-})();
+}();
