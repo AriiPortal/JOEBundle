@@ -98,7 +98,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		var repeat = obj.repeat != null;
 		var absRepeat = obj.absoluteRepeat != null;
 
-		return row = [obj.letRun ? 'Yes' : 'No', singleStart ? '' : obj.begin, singleStart ? '' : obj.end, repeat ? obj.repeat : '', singleStart ? obj.singleStart : '', absRepeat ? obj.absoluteRepeat : '', whenHoliday];
+		return [obj.letRun ? 'Yes' : 'No', singleStart ? '' : obj.begin, singleStart ? '' : obj.end, repeat ? obj.repeat : '', singleStart ? obj.singleStart : '', absRepeat ? obj.absoluteRepeat : '', whenHoliday];
 	}
 
 	function addRow(data) {
@@ -230,7 +230,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 				end_hh: '00',
 				end_mm: '00',
 				end_ss: '00',
-				start: '',
+				start: 'single_start',
 				start_hh: '00',
 				start_mm: '00',
 				start_ss: '00',
@@ -246,7 +246,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		this.form.getCombo('start').addOption(opts);
 
 		if (this.editMode) {
-			obj = this.binder.getData(this.current).data;
+			var obj = this.binder.getData(this.current).data;
 			value.input.whenHoliday = obj.whenHoliday;
 			var startTime;
 			if (obj.singleStart != null) {
@@ -355,7 +355,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 			var hasRepeat = false;
 
 			for (var id in this.binder.data) {
-				var obj = this.binder.data[id];
+				var obj = this.binder.data[id].data;
 				hasRepeat = obj.repeat != null || obj.absoluteRepeat != null;
 				if (hasRepeat) break;
 			}
@@ -415,3 +415,4 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 
 	joe.loader.finished(build);
 });
+

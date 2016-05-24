@@ -15,7 +15,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		var monthdaysCbs = {
 			onInit: function (data) {
 				this.monthdaysData = null;
-				for (key in data) {
+				for (var key in data) {
 					this.monthdaysData = data[key];
 					break;
 				}
@@ -27,7 +27,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 					this.monthdaysData = data;
 					setupMonthdays(this.monthdaysData);
 				}
-			}
+			}.bind(this)
 		};
 
 		this.binder.register(this, monthdaysCbs, { days: true });

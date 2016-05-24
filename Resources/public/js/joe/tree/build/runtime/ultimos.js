@@ -15,7 +15,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		var ultimosCbs = {
 			onInit: function (data) {
 				this.ultimosData = null;
-				for (key in data) {
+				for (var key in data) {
 					this.ultimosData = data[key];
 					break;
 				}
@@ -27,7 +27,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 					this.ultimosData = data;
 					setupUltimos(this.ultimosData);
 				}
-			}
+			}.bind(this)
 		};
 
 		this.binder.register(this, ultimosCbs, { days: true });

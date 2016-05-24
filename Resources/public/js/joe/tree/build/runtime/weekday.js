@@ -15,7 +15,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 		var weekdayCbs = {
 			onInit: function (data) {
 				this.weekdayData = null;
-				for (key in data) {
+				for (var key in data) {
 					this.weekdayData = data[key];
 					break;
 				}
@@ -27,7 +27,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 					this.weekdayData = data;
 					setupWeekday(this.weekdayData);
 				}
-			}
+			}.bind(this)
 		};
 
 		this.binder.register(this, weekdayCbs, { days: true });
