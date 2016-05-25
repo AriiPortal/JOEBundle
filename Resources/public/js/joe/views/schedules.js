@@ -25,16 +25,12 @@ joe.loader.load('templates/default_entity_adder', function (DefaultEntityAdder) 
 			var name = uniqueName(adder.grid.grid);
 			adder.grid.create({
 				name: name
-			}, function (data) {
-				if (!joe.tree.schedules.loaded) joe.tree.schedules.loadChildren();else joe.tree.schedules.add(data);
 			});
 		}
 
 		function delSchedule(adder) {
 			if (adder.selected != null) {
-				adder.grid.remove(adder.selected, function (data) {
-					joe.tree.schedules.remove(data.id);
-				});
+				adder.grid.remove(adder.selected);
 			}
 		}
 

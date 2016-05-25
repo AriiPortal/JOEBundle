@@ -2,40 +2,56 @@
 
 joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 
-	function WeekdaysNode(binder) {
+	function WeekdaysNode(binder, root) {
 		this.binder = binder;
 		this.children = {};
+		var direct = false;
+		var path = 'days';
 
-		var setupWeekdays = function (data) {
-			this.daysBinder = new EntityBinder('day', data.binder, 'days');
+		if (root)
+		{
+			direct = true;
+			path = root + '.' + path;
+		}
+
+		var setupWeekdays = function (bind) {
+
+			this.daysBinder = new EntityBinder('day', bind, path);
 
 			if (this.onBinder) this.onBinder();
 		}.bind(this);
 
-		var weekdaysCbs = {
-			onInit: function (data) {
-				this.weekdaysData = null;
-				for (var key in data) {
-					this.weekdaysData = data[key];
-					break;
-				}
+		if (!direct) {
+			var weekdaysCbs = {
+				onInit: function (data) {
+					this.weekdaysData = null;
+					for (var key in data) {
+						this.weekdaysData = data[key];
+						break;
+					}
 
-				if (this.weekdaysData == null) binder.create({});else setupWeekdays(this.weekdaysData);
-			}.bind(this),
-			onCreate: function onCreate(data) {
-				if (this.weekdaysData == null) {
-					this.weekdaysData = data;
-					setupWeekdays(this.weekdaysData);
-				}
-			}.bind(this)
-		};
+					if (this.weekdaysData == null) binder.create({});else setupWeekdays(this.weekdaysData.binder);
+				}.bind(this),
+				onCreate: function onCreate(data) {
+					if (this.weekdaysData == null) {
+						this.weekdaysData = data;
+						setupWeekdays(this.weekdaysData.binder);
+					}
+				}.bind(this)
+			};
 
-		binder.register(this, weekdaysCbs, { days: true });
+			binder.register(this, weekdaysCbs, { days: true });
+		}
+		else
+		{
+			setupWeekdays(binder);
+		}
 	}
 
 	WeekdaysNode.prototype = new Node();
 
 	function onInit(data) {
+		this.tree.obj.deleteChildItems(this.obj.id);
 		for (var key in data) {
 			this._addChild(data[key]);
 		}this._refresh();

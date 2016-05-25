@@ -2,40 +2,55 @@
 
 joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 
-	function MonthdaysNode(binder) {
+	function MonthdaysNode(binder, root) {
 		this.binder = binder;
 		this.children = {};
+		var direct = false;
+		var path = 'days';
 
-		var setupMonthdays = function (data) {
-			this.daysBinder = new EntityBinder('day', data.binder, 'days');
+		if (root)
+		{
+			direct = true;
+			path = root + '.' + path;
+		}
+
+		var setupMonthdays = function (bind) {
+			this.daysBinder = new EntityBinder('day', bind, path);
 
 			if (this.onBinder) this.onBinder();
 		}.bind(this);
 
-		var monthdaysCbs = {
-			onInit: function (data) {
-				this.monthdaysData = null;
-				for (var key in data) {
-					this.monthdaysData = data[key];
-					break;
-				}
+		if (!direct) {
+			var monthdaysCbs = {
+				onInit: function (data) {
+					this.monthdaysData = null;
+					for (var key in data) {
+						this.monthdaysData = data[key];
+						break;
+					}
 
-				if (this.monthdaysData == null) this.binder.create({});else setupMonthdays(this.monthdaysData);
-			}.bind(this),
-			onCreate: function onCreate(data) {
-				if (this.monthdaysData == null) {
-					this.monthdaysData = data;
-					setupMonthdays(this.monthdaysData);
-				}
-			}.bind(this)
-		};
+					if (this.monthdaysData == null) this.binder.create({});else setupMonthdays(this.monthdaysData.binder);
+				}.bind(this),
+				onCreate: function onCreate(data) {
+					if (this.monthdaysData == null) {
+						this.monthdaysData = data;
+						setupMonthdays(this.monthdaysData.binder);
+					}
+				}.bind(this)
+			};
 
-		this.binder.register(this, monthdaysCbs, { days: true });
+			this.binder.register(this, monthdaysCbs, { days: true });
+		}
+		else
+		{
+			setupMonthdays(binder);
+		}
 	}
 
 	MonthdaysNode.prototype = new Node();
 
 	function onInit(data) {
+		this.tree.obj.deleteChildItems(this.obj.id);
 		for (var key in data) {
 			this._addChild(data[key]);
 		}this._refresh();

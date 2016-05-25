@@ -17,7 +17,7 @@ var Binder = function () {
 				initialized: false
 			};
 
-			var oldSelector = Object.assign({}, this.selector());
+			var oldSelector = this.selector();
 
 			if (processDep) processDep(dep);
 

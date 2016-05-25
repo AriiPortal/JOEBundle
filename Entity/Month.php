@@ -36,7 +36,7 @@ class Month extends AbstractEntity
      *      inverseJoinColumns={@ORM\JoinColumn(name="period_id", referencedColumnName="id", unique=true, onDelete="CASCADE")}
      *      )
      */
-    protected $periodCollection;
+    protected $periods;
 
     /**
      * @var Monthday
@@ -69,30 +69,30 @@ class Month extends AbstractEntity
      */
     public function __construct()
     {
-        $this->periodCollection = new ArrayCollection;
+        $this->periods = new ArrayCollection;
         return parent::__construct();
     }
 
     /**
-     * Get PeriodCollection
+     * Get Periods
      *
      * @return ArrayCollection
      */
-    public function getPeriodCollection()
+    public function getPeriods()
     {
-        return $this->periodCollection;
+        return $this->periods;
     }
 
     /**
-     * Set PeriodCollection
+     * Set Periods
      *
-     * @param ArrayCollection $periodCollection
+     * @param ArrayCollection $periods
      *
      * @return self
      */
-    public function setPeriodCollection(ArrayCollection $periodCollection)
+    public function setPeriods(ArrayCollection $periods)
     {
-        $this->periodCollection = $periodCollection;
+        $this->periods = $periods;
         return $this;
     }
 
@@ -105,7 +105,7 @@ class Month extends AbstractEntity
      */
     public function addPeriod(Period $period)
     {
-        $this->periodCollection[] = $period;
+        $this->periods[] = $period;
         return $this;
     }
 

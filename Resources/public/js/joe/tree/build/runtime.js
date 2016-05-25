@@ -95,7 +95,6 @@ joe.loader.load('tree/build/runtime/weekdays', function (WeekdaysNode) {
 						var node = new DataNode(binder, { month: true });
 
 						node.children = [];
-						node.binders = [];
 
 						node.onClick = function () {
 							joe.view.load('templates/runtime/periods', binder);
@@ -106,32 +105,24 @@ joe.loader.load('tree/build/runtime/weekdays', function (WeekdaysNode) {
 							node.tree.obj.setItemText(node.obj.id, data.month.join(' '));
 						};
 
-						var weekdaysBinder = new EntityBinder('weekdays', binder, 'weekdays');
-						node.binders.push(weekdaysBinder);
-
-						var ultimosBinder = new EntityBinder('ultimos', binder, 'ultimos');
-						node.binders.push(ultimosBinder);
-
-						var monthdayBinder = new EntityBinder('monthday', binder, 'monthday');
-						node.binders.push(monthdayBinder);
 
 						node.loadChildren = function (callback) {
-							var weekdays = new WeekdaysNode(weekdaysBinder);
+							var weekdays = new WeekdaysNode(binder, 'weekdays');
 							weekdays.init(false, 'any Weekday');
 							weekdays.addTo(this.tree, this.obj.id);
 							this.children.push(weekdays);
 
-							var monthdays = new MonthdaysNode(monthdayBinder);
+							var monthdays = new MonthdaysNode(binder, 'monthday');
 							monthdays.init(false, 'Days in a Month');
 							monthdays.addTo(this.tree, this.obj.id);
 							this.children.push(monthdays);
 
-							var ultimos = new UltimosNode(ultimosBinder);
+							var ultimos = new UltimosNode(binder, 'ultimos');
 							ultimos.init(false, 'Ultimo');
 							ultimos.addTo(this.tree, this.obj.id);
 							this.children.push(ultimos);
 
-							var weekday = new WeekdayNode(monthdayBinder);
+							var weekday = new WeekdayNode(binder, 'monthday');
 							weekday.init(false, 'Specific Days of Week');
 							weekday.addTo(this.tree, this.obj.id);
 							this.children.push(weekday);
@@ -140,10 +131,10 @@ joe.loader.load('tree/build/runtime/weekdays', function (WeekdaysNode) {
 						};
 
 						node.destroy = function () {
+							DataNode.prototype.destroy.call(this);
+
 							for (var i = 0; i < this.children.length; i++) {
 								this.children[i].destroy();
-							}for (var i = 0; i < this.binders.length; i++) {
-								this.binders[i].destroy();
 							}
 						};
 

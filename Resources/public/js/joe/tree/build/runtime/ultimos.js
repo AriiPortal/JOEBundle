@@ -2,40 +2,56 @@
 
 joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 
-	function UltimosNode(binder) {
+	function UltimosNode(binder, root) {
 		this.binder = binder;
 		this.children = {};
+		var direct = false;
+		var path = 'dayCollection';
 
-		var setupUltimos = function (data) {
-			this.daysBinder = new EntityBinder('day', data.binder, 'dayCollection');
+		if (root)
+		{
+			direct = true;
+			path = root + '.' + path;
+		}
+
+		var setupUltimos = function (bind) {
+			this.daysBinder = new EntityBinder('day', bind, path);
 
 			if (this.onBinder) this.onBinder();
 		}.bind(this);
 
-		var ultimosCbs = {
-			onInit: function (data) {
-				this.ultimosData = null;
-				for (var key in data) {
-					this.ultimosData = data[key];
-					break;
-				}
+		if (!direct)
+		{
+			var ultimosCbs = {
+				onInit: function (data) {
+					this.ultimosData = null;
+					for (var key in data) {
+						this.ultimosData = data[key];
+						break;
+					}
 
-				if (this.ultimosData == null) this.binder.create({});else setupUltimos(this.ultimosData);
-			}.bind(this),
-			onCreate: function onCreate(data) {
-				if (this.ultimosData == null) {
-					this.ultimosData = data;
-					setupUltimos(this.ultimosData);
-				}
-			}.bind(this)
-		};
+					if (this.ultimosData == null) this.binder.create({});else setupUltimos(this.ultimosData.binder);
+				}.bind(this),
+				onCreate: function onCreate(data) {
+					if (this.ultimosData == null) {
+						this.ultimosData = data;
+						setupUltimos(this.ultimosData.binder);
+					}
+				}.bind(this)
+			};
 
-		this.binder.register(this, ultimosCbs, { days: true });
+			this.binder.register(this, ultimosCbs, { dayCollection: true });
+		}
+		else
+		{
+			setupUltimos(binder);
+		}
 	}
 
 	UltimosNode.prototype = new Node();
 
 	function onInit(data) {
+		this.tree.obj.deleteChildItems(this.obj.id);
 		for (var key in data) {
 			this._addChild(data[key]);
 		}this._refresh();

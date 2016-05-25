@@ -30,10 +30,10 @@ function formatMonthday(i) {
 	return String(i) + suffix;
 }
 
-spec.monthdays = new Array(31).fill(1);
-spec.monthdays = spec.monthdays.map(function (x, i) {
-	return formatMonthday(x + i);
-});
+spec.monthdays = [];
+for (var i = 0; i < 31; i++) {
+	spec.monthdays.push(formatMonthday(i+1));
+}
 
 function indexToMonthday(i) {
 	return i + 1;
@@ -50,6 +50,10 @@ function toMonthdayName(day) {
 spec.months = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 
 spec.ultimos = ['last day', '1 day'];
-spec.ultimos = spec.ultimos.concat(new Array(29).fill(2).map(function (x, i) {
-	return String(x + i) + ' days';
-}));
+spec.ultimos = spec.ultimos.concat((function() {
+	var tmp = [];
+	for (var i = 0; i < 29; i++) {
+		tmp.push(String(2 + i) + ' days');
+	}
+	return tmp;
+})());

@@ -25,7 +25,11 @@ joe.loader.load('utils/binder/list_binder', function (ListBinder) {
 			var i;
 			for (i = 0; i < path.length - 1; i++) {
 				ptr = ptr[path[i]];
-			}return ptr[path[i]];
+				if (ptr == undefined)
+					return null;
+			}
+
+			return ptr[path[i]];
 		}
 
 		function EntityBinder(target, parent, root) {
@@ -37,15 +41,20 @@ joe.loader.load('utils/binder/list_binder', function (ListBinder) {
 
 			var selector = rootSelector(this.root);
 
+			var onInit = function (data) {
+				var res = unwrap(root, data);
+				this._onFetch(res ? res : []);
+			}.bind(this);
+
 			var onFetch = function (data) {
 				if (this.waiting) {
 					var res = unwrap(root, data);
-					this._onFetch(res);
+					this._onFetch(res ? res : []);
 				}
 			}.bind(this);
 
 			var callbacks = {
-				onInit: onFetch,
+				onInit: onInit,
 				onUpdate: onFetch
 			};
 

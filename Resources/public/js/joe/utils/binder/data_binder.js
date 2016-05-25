@@ -104,12 +104,11 @@ joe.loader.load('utils/binder/binder', function (Binder) {
 
 			xhr.open("POST", this.route.json, true);
 			xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-			xhr.responseType = 'json';
 
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState == 4) {
 					if (xhr.status == 200) {
-						this._mergeRefresh(xhr.response);
+						this._mergeRefresh(JSON.parse(xhr.response));
 					} else {
 						console.error("Cannot fetch data: " + xhr.responseText);
 					}
@@ -132,17 +131,17 @@ joe.loader.load('utils/binder/binder', function (Binder) {
 			var xhr = new XMLHttpRequest();
 			xhr.open("POST", this.route.update, true);
 			xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-			xhr.responseType = 'json';
 
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState == 4 && xhr.status < 400) // The operation is complete
-					{
-						this._mergeRefresh(xhr.response);
+				{
+					var res = JSON.parse(xhr.response);
+					this._mergeRefresh(res);
 
-						if (this.updateHook) this.updateHook(xhr.response);
+					if (this.updateHook) this.updateHook(res);
 
-						if (callback) callback(xhr.response);
-					}
+					if (callback) callback(res);
+				}
 			}.bind(this);
 			xhr.send(JSON.stringify(diff));
 		};

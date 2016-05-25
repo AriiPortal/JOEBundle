@@ -14,12 +14,11 @@ joe.loader.load('utils/binder/list_binder', function (ListBinder) {
 		StandaloneBinder.prototype.fetch = function () {
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', this.url, true);
-			xhr.responseType = 'json';
 
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState == 4) {
 					if (xhr.status == 200) {
-						this._onFetch(xhr.response);
+						this._onFetch(JSON.parse(xhr.response));
 					} else {
 						console.error("Could not delete entity: " + xhr.responseText);
 					}

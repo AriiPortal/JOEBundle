@@ -81,7 +81,11 @@ joe.loader.load('utils/binder/binder', function (Binder) {
 
 				for (var i = 0; i < list.length; i++) {
 					next[list[i].id] = list[i];
-				}var current = Object.assign({}, this.data);
+				}
+
+				var current = {}
+				for (var key in this.data)
+					current[key] = this.data[key];
 
 				/* We start by NEW and UPDATED data */
 				for (var key in next) {
@@ -158,12 +162,11 @@ joe.loader.load('utils/binder/binder', function (Binder) {
 
 				var xhr = new XMLHttpRequest();
 				xhr.open("POST", url, true);
-				xhr.responseType = 'json';
 
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState == 4) {
 						if (xhr.status == 200) {
-							var data = xhr.response;
+							var data = JSON.parse(xhr.response);
 							var wrapped = this._add(data);
 							this._onCreate(data);
 							this._propagate('onCreate', wrapped);

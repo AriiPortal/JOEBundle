@@ -43,7 +43,7 @@ class Holiday extends AbstractEntity
      *
      * @return self
      */
-    public function setDate(string $date)
+    public function setDate($date)
     {
         $this->date = $date;
 
