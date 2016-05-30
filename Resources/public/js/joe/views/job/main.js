@@ -102,13 +102,13 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 						tabXML.prototype.reload = function () {
 							var xhr = new XMLHttpRequest();
 							xhr.open("GET", this.url, true);
-							xhr.send();
 
 							xhr.onreadystatechange = function () {
 								if (xhr.readyState == 4 && xhr.status == 200) {
 									this.form.setItemValue('xml', xhr.responseText);
 								}
 							}.bind(this);
+							xhr.send();
 						};
 
 						tabXML.prototype.destroy = function () {};

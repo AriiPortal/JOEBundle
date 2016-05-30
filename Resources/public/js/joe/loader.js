@@ -20,22 +20,12 @@ var Loader = function () {
 
 			var url = joe.routes.asset('js/joe/' + target + '.js');
 
-			var xhr = new XMLHttpRequest();
-			xhr.open("GET", url, true);
-
 			this.loading.push({ name: target, callback: callback });
 
-			xhr.onreadystatechange = function () {
-				if (xhr.readyState == 4) {
-					if (xhr.status < 400) {
-						eval(xhr.responseText);
-					} else {
-						console.error("Cannot load  " + target + ": " + xhr.responseText);
-					}
-				}
-			}.bind(this);
-
-			xhr.send();
+			var newtag = document.createElement('script');
+			newtag.setAttribute("type","text/javascript");
+			newtag.setAttribute("src", url);
+			document.getElementsByTagName("head")[0].appendChild(newtag);
 		},
 		isLoaded: function isLoaded(target) {
 			return this.loaded.hasOwnProperty(target);

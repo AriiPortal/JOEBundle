@@ -49,7 +49,7 @@ joe.loader.load('utils/binder/standalone_binder', function (StandaloneBinder) {
 					}
 
 					var binder = new EntityBinder('monitor', binder, 'monitors');
-					var monitors = new CollectionNode(target, binder, jobProcess, { name: true });
+					var monitors = new CollectionNode('monitor', binder, jobProcess, { name: true });
 
 					monitors.onClick = function () {
 						joe.view.load('views/job/processing', binder);
@@ -78,7 +78,7 @@ joe.loader.load('utils/binder/standalone_binder', function (StandaloneBinder) {
 					}
 
 					var binder = new EntityBinder('commands', binder, 'commandsCollection');
-					var monitors = new CollectionNode(target, binder, jobCommand, selector);
+					var monitors = new CollectionNode('commands', binder, jobCommand, selector);
 
 					monitors.onClick = function () {
 						joe.view.load('views/job/commands', binder);
@@ -93,7 +93,17 @@ joe.loader.load('utils/binder/standalone_binder', function (StandaloneBinder) {
 					return monitors;
 				}
 
-				var jobSub = [genLoadViewNode('Options', 'views/job/options'), genLoadViewNode('Parameter', 'views/job/parameter'), jobProcessing, genLoadViewNode('Run options', 'views/job/runoptions'), genLoadViewNode('Locks used', 'views/job/locksused'), genLoadViewNode('Monitors used', 'views/job/monitorsused'), genRuntimeNode.bind(null, 'templates/runtime'), jobCommands, genLoadViewNode('Documentation', 'templates/documentation')];
+				var jobSub = [
+					genLoadViewNode('Options', 'views/job/options'),
+					genLoadViewNode('Parameter', 'views/job/parameter'),
+					jobProcessing,
+					genLoadViewNode('Run options', 'views/job/runoptions'),
+					genLoadViewNode('Locks used', 'views/job/locksused'),
+					genLoadViewNode('Monitors used', 'views/job/monitorsused'),
+					genRuntimeNode.bind(null, 'templates/runtime'),
+					jobCommands,
+					genLoadViewNode('Documentation', 'templates/documentation')
+				];
 
 				function addJobs(tree) {
 					function job(binder) {

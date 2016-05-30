@@ -101,7 +101,6 @@ joe.loader.load('utils/binder/binder', function (Binder) {
 
 		DataBinder.prototype.fetch = function () {
 			var xhr = new XMLHttpRequest();
-
 			xhr.open("POST", this.route.json, true);
 			xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 

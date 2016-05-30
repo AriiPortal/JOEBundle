@@ -330,7 +330,7 @@ joe.loader.load('utils/binder/entity_binder', function (EntityBinder) {
 			}
 		}
 		for (var key in actions) {
-			action = actions[key];
+			var action = actions[key];
 			action.call(this.form, key);
 		}
 
