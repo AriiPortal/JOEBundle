@@ -170,12 +170,12 @@ class APIController extends Controller
 
     public function updateAction($target, $id)
     {
-        try
-        {
+
             $name = $this->getEntityName($target);
             $entity = $this->getEntity($name, $id);
-            $entityService = $this->getEntityService($target);
+            $entityService = $this->getEntityService($name);
             $this->updateEntity($entity);
+
 
             if ($entityService != null)
             {
@@ -193,12 +193,7 @@ class APIController extends Controller
             $response = new Response(json_encode($json));
             $response->headers->set('Content-Type', 'application/json');
             return $response;
-        }
-        catch (Exception $e)
-        {
-            return new Response("Error: " . $e->getMessage() . ".",
-                                Response::HTTP_BAD_REQUEST);
-        }
+
     }
 
     public function removeAction($target, $id)

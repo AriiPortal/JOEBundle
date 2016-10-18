@@ -23,7 +23,6 @@ var EntityGrid = function () {
 	}
 
 	function EntityGrid(target, grid, rowDesc, binder) {
-		this.target = target;
 		this.route = joe.routes.api(target);
 		this.grid = grid;
 		this.rowDesc = rowDesc;

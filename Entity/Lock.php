@@ -31,7 +31,7 @@ class Lock extends AbstractEntity
     /**
      * @var integer
      *
-     * @ORM\Column(name="max_non_exclusive", type="integer")
+     * @ORM\Column(name="max_non_exclusive", type="integer", nullable=true)
      */
     protected $maxNonExclusive;
 

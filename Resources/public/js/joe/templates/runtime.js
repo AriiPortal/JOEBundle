@@ -49,7 +49,7 @@
 		var begin = splitDelay('00:00:00');
 		var end = splitDelay('00:00:00');
 
-		if (data) {
+		if (data && ptr) {
 			if (ptr.begin) begin = splitDelay(ptr.begin);
 
 			if (ptr.end) end = splitDelay(ptr.end);

@@ -211,14 +211,32 @@ joe.loader.load('utils/binder/standalone_binder', function (StandaloneBinder) {
 				}
 
 				function addProcessClasses(tree) {
-					var node = new Node();
+					function pClass(binder) {
+						var node = new DataNode(binder, { name: true });
 
-					node.onClick = function () {
-						console.log("Loading pclass");
+						node.onClick = function () {
+							console.log("Loading processclass");
+						};
+
+						node.receive = function (data) {
+							node.setVisible(true);
+							node.tree.obj.setItemText(node.obj.id, data.name);
+						};
+
+						node.init(true, "");
+						return node;
+					}
+
+					var target = 'processClass';
+					var binder = new StandaloneBinder(target);
+					var pClasses = new CollectionNode(target, binder, pClass, { name: true });
+
+					pClasses.onClick = function () {
+						joe.view.load('views/processclass', binder);
 					};
 
-					node.init(true, "Process Classes");
-					node.addTo(tree, tree.obj.rootId);
+					pClasses.init(true, "Process Class");
+					pClasses.addTo(tree, tree.obj.rootId);
 				}
 
 				function addSchedules(tree) {
@@ -252,9 +270,10 @@ joe.loader.load('utils/binder/standalone_binder', function (StandaloneBinder) {
 
 				function addLocks(tree) {
 					var node = new Node();
+					var binder = new StandaloneBinder('lock');
 
 					node.onClick = function () {
-						console.log("Loading locks");
+						joe.view.load('views/locks', binder);
 					};
 
 					node.init(true, "Locks");
@@ -277,14 +296,16 @@ joe.loader.load('utils/binder/standalone_binder', function (StandaloneBinder) {
 					addChains(tree);
 					addOrders(tree);
 					addProcessClasses(tree);
+					/* No schedule entity
 					addSchedules(tree);
+					*/
 					addLocks(tree);
+					/*
+					 * Where is the monitors tag ?
+					 addProcessings(tree);
+					*/
 
 					tree.obj.openItem(tree.obj.rootId);
-					/*
-      * Where is the monitors tag ?
-      addProcessings(tree);
-     */
 				}
 
 				return build;

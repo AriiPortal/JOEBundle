@@ -9,7 +9,7 @@ joe.loader.load('templates/form_entity_adder', function (FormEntityAdder) {
 	];
 
 	var formDesc = [
-		{ type: 'combo', name: 'lock', label: 'Lock', labelWidth: 150, width: 140 },
+		{ type: 'combo', name: 'name', label: 'Lock', labelWidth: 150, width: 140 },
 		{ type: 'block', list: [
 			{ type: 'label', label: 'Max Non Exclusive' },
 			{ type: 'checkbox', name: 'unlimited', label: 'unlimited' },
@@ -38,7 +38,7 @@ joe.loader.load('templates/form_entity_adder', function (FormEntityAdder) {
 
 		form.setItemValue('name', name);
 		form.setItemValue('maxNonExclusive', maxNonExclusive);
-		
+
 		var func = unlimited ? form.checkItem : form.uncheckItem;
 		func.call(form, 'unlimited');
 

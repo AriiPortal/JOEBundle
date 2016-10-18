@@ -56,12 +56,12 @@ class ProcessClass extends AbstractEntity
      *
      * @ORM\Column(type="boolean")
      */
-    protected $replace = true;
+    protected $replaceExisting = true;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="spooler_id", type="integer")
+     * @ORM\Column(name="spooler_id", type="integer", nullable=true)
      */
     protected $spoolerId;
 
@@ -111,7 +111,7 @@ class ProcessClass extends AbstractEntity
      *
      * @return self
      */
-    public function setJobScheduler(Arii\JOEBundle\Entity\JobScheduler $jobScheduler)
+    public function setJobScheduler(JobScheduler $jobScheduler)
     {
         $this->jobScheduler = $jobScheduler;
 
@@ -195,9 +195,9 @@ class ProcessClass extends AbstractEntity
      *
      * @return boolean
      */
-    public function getReplace()
+    public function getReplaceExisting()
     {
-        return $this->replace;
+        return $this->replaceExisting;
     }
 
     /**
@@ -207,9 +207,9 @@ class ProcessClass extends AbstractEntity
      *
      * @return self
      */
-    public function setReplace($replace)
+    public function setReplaceExisting($replace)
     {
-        $this->replace = $replace;
+        $this->replaceExisting = $replace;
 
         return $this;
     }
