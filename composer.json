@@ -8,9 +8,9 @@
         "ramsey/uuid": "^3.1",
         "ramsey/uuid-doctrine": "^1.1",
         "symfony/event-dispatcher": "^2.7",
-		"symfony/serializer": "^3.0",
-		"symfony/property-access": "^3.0",
-		"gbprod/uuid-normalizer": "^1.0"
+        "symfony/serializer": "^3.0",
+        "symfony/property-access": "^3.0",
+        "gbprod/uuid-normalizer": "^1.0"
     },
     "require-dev": {
         "atoum/atoum-bundle": "~1.1"
